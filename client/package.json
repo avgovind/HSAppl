@@ -18,8 +18,11 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "exif": "^0.6.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
+    "react-fileupload": "^2.2.0",
+    "react-fileupload-progress": "^0.3.2",
     "react-router": "^2.5.2",
     "semantic-ui": "^2.2.2"
   }

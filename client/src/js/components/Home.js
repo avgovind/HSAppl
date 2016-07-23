@@ -43,7 +43,7 @@ var Home = React.createClass({
 
   render: function () {
     return (
-      <div class="ui doubling stackable grid container">
+      <div className="ui doubling stackable grid container">
         {this.state.text}
 
       </div>

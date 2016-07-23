@@ -3,6 +3,7 @@
  */
 
 var React = require('react');
+var PhotoFrame = require('./photoframe');
 
 var Photos = React.createClass({
 
@@ -44,9 +45,22 @@ var Photos = React.createClass({
 
   render: function () {
     return (
-      <div class="ui doubling stackable grid container">
-        {this.state.text}
-
+      <div className="ui grid container">
+        <div>
+          <PhotoFrame img_src="" desc="test description1" />
+        </div>
+        <div>
+          <PhotoFrame img_src="" desc="test description2" />
+        </div>
+        <div>
+          <PhotoFrame img_src="" desc="test description3" />
+        </div>
+        <div>
+          <PhotoFrame img_src="" desc="test description4" />
+        </div>
+        <div>
+          <PhotoFrame img_src="" desc="test description5" />
+        </div>
       </div>
     );
   }
