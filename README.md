@@ -1,2 +1,2 @@
 # HSAppl
-Web application for managing personal digital data
+Web application for managing personal digital assets

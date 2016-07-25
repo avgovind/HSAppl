@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a1321aa-bd49-4034-afa3-92511428acca" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/src/js/actions/actions.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/FileHandling/FileDigester.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/FileHandling/FileHandler.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/RESTLayer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/common/const.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/common/error.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/elasticsearch/esIndicesConfig.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/elasticsearch/esclient.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/homeserver/healthmonitor.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/homeserver/homeserver.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/js/components/hsfileupload/hsfileupload.js" afterPath="$PROJECT_DIR$/client/src/js/components/hsfileupload/hsfileupload.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/package.json" afterPath="$PROJECT_DIR$/server/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.js" afterPath="$PROJECT_DIR$/server/server.js" />
     </list>
     <ignored path="HomeServer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -131,7 +118,7 @@
       <file leaf-file-name="actions.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/src/js/actions/actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.058900524">
+            <state vertical-scroll-proportion="0.17578125">
               <caret line="5" column="52" selection-start-line="5" selection-start-column="52" selection-end-line="5" selection-end-column="52" />
               <folding>
                 <element signature="n#!!doc;n#itemsLoad#0" expanded="false" />
@@ -437,14 +424,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1599" y="28" width="1602" height="1139" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27625" sideWeight="0.49472097" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27625" sideWeight="0.49472097" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5509804" sideWeight="0.5275" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21862745" sideWeight="0.4725" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.71666664" sideWeight="0.4725" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.50527906" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -849,7 +836,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/js/actions/actions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.058900524">
+        <state vertical-scroll-proportion="0.17578125">
           <caret line="5" column="52" selection-start-line="5" selection-start-column="52" selection-end-line="5" selection-end-column="52" />
           <folding>
             <element signature="n#!!doc;n#itemsLoad#0" expanded="false" />
