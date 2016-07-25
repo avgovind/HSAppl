@@ -10,8 +10,10 @@
   "author": "Govind Avireddi",
   "license": "ISC",
   "dependencies": {
+    "elasticsearch": "^11.0.1",
     "exif": "^0.6.0",
     "express": "^4.14.0",
+    "lodash": "^4.13.1",
     "multer": "^1.1.0"
   },
   "devDependencies": {

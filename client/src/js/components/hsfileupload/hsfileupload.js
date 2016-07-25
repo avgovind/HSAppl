@@ -30,16 +30,23 @@ var HSFileUpload = React.createClass({
   },
 
   _beforeUpload(files, mill) {
+    return true;
 
-    console.log(mill);
-    console.log(files);
-    if(typeof files == string) return true;
-    if(files[0].size<1024*1024*20){
-      files[0].mill = mill;
-      return true;
-    }
-    console.log("returning false");
-    return false;
+    //console.log(mill);
+    //console.log(files);
+    //console.log(files[0]);
+    //console.log(typeof files);
+    //if(typeof files === string) {
+    //  console.log("returning true1");
+    //  return true;
+    //}
+    //if(files[0].size<1024*1024*20){
+    //  files[0].mill = mill;
+    //  console.log("returning true");
+    //  return true;
+    //}
+    //console.log("returning false");
+    //return false;
   },
 
   /*
