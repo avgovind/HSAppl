@@ -3,7 +3,6 @@
  */
 
 const FileUpload = require('react-fileupload');
-//var {FileUploadProgress} = require('react-fileupload-progress');
 var React = require('react');
 
 var HSFileUpload = React.createClass({
@@ -29,7 +28,7 @@ var HSFileUpload = React.createClass({
     }
   },
 
-  _beforeUpload(files, mill) {
+  _beforeUpload: function(files, mill) {
     return true;
 
     //console.log(mill);

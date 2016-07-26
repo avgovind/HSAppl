@@ -4,6 +4,7 @@
 
 var React = require('react');
 var PhotoFrame = require('./photoframe');
+//var actions = require("../../actions/actions");
 
 var Photos = React.createClass({
 
@@ -35,6 +36,7 @@ var Photos = React.createClass({
    * content first and this function can asyncronously trigger render() when there is data
    * */
   componentDidMount: function () {
+    //this.props.dispatch(actions.itemsLoad("photos"));
 
   },
 
@@ -65,5 +67,10 @@ var Photos = React.createClass({
     );
   }
 });
+
+//Photos,propTypes = {
+//  category: PropTypes.string.isRequired
+//
+//};
 
 module.exports = Photos;

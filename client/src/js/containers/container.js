@@ -6,7 +6,8 @@ var React = require('react');
 
 var HSContainer = React.createClass({
   render: function () {
-    return (
+    return (<div>
+      </div>
 
     )
   }

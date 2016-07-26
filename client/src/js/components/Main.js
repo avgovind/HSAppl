@@ -2,15 +2,18 @@
  * Created by govind on 7/16/16.
  */
 
-/**
+/*
  * This component is main component
  * This should include the application bar on top of the page
  *  * @type {*|exports|module.exports}
  */
 
 
+//import React from 'react';
+//import {Link} from 'react-router';
+//import HSFileUpload from './hsfileupload/hsfileupload';
 var React = require('react');
-var {Link} = require('react-router');
+var Link = require('react-router').Link;
 var HSFileUpload = require('./hsfileupload/hsfileupload');
 
 
@@ -48,10 +51,10 @@ var Main = React.createClass({
 
   },
 
-  _onChange(event) {
+  _onChange: function(event) {
     this.setState({text: event.target.value});
   },
-  _onClick(event) {
+  _onClick: function(event) {
     console.log(event);
     console.log(event.target.innerText);
     this.setState({text: event.target.innerText});
@@ -65,7 +68,7 @@ var Main = React.createClass({
 
 
 
-    let searchBox =
+    var searchBox =
             <div className="menu">
               <div className="ui search" >
                 <div className="ui icon input">
