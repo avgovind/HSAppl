@@ -34,3 +34,7 @@ This one is not easy to getstarted so not the preferred one even though it has p
 
 multer for nodejs side rest api for file upload
 
+REST Client:
+-----------
+
+npm install --save isomorphic-fetch es6-promise

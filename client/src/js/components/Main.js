@@ -55,8 +55,6 @@ var Main = React.createClass({
     this.setState({text: event.target.value});
   },
   _onClick: function(event) {
-    console.log(event);
-    console.log(event.target.innerText);
     this.setState({text: event.target.innerText});
 
     if (event.target.innerText == MENU_LABELS.photos) {
@@ -65,6 +63,8 @@ var Main = React.createClass({
   },
 
   render: function () {
+
+    console.log("this.props.children: ", this.props.children);
 
 
 

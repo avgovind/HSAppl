@@ -2,6 +2,9 @@
  * Created by govind on 7/16/16.
  */
 
+var path = require('path')
+var webpack = require('webpack')
+
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/src/index.html',
@@ -19,7 +22,14 @@ module.exports = {
   },
   module: {
     loaders: [
-      {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"}
+      {
+        test: /\.js$/,
+        exclude: [/node_modules/, /semantic/],
+        loader: "babel-loader",
+        query: {
+          presets: ['es2015', 'react']
+        }
+      }
     ]
   },
   plugins: [HTMLWebpackPluginConfig]

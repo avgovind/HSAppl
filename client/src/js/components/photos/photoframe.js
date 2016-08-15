@@ -7,7 +7,10 @@ var React = require('react');
 var PhotoFrame = React.createClass({
 
   getDefaultProps: function () {
+    console.log("PhotoFrame getDefaultProps");
+
     return {
+      key: 0,
       img_src: "",
       date: "",
       location: "",
@@ -18,6 +21,7 @@ var PhotoFrame = React.createClass({
 
   getInitialState: function () {
     return {
+      key: 0,
       img_src: "",
       date: "",
       location: "",

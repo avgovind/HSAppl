@@ -9,7 +9,7 @@ var hashHistory = ReactRouter.hashHistory;
 var IndexRoute = ReactRouter.IndexRoute;
 var Main = require('../components/Main');
 var Home = require('../components/Home');
-var Photos = require('../components/photos/photos');
+import Photos from '../components/photos/photos';
 
 var routes = (
   <Router history={hashHistory}>

@@ -21,10 +21,7 @@ var _client = elasticsearch.Client({
 });
 
 
-/**
- * list all appliances registed in OVP appliance
- */
-exports.getAllAppliances = getAllAppliances;
+exports.getItems = getItems;
 exports.createIndex = createIndex;
 exports.initIndices = initIndices;
 exports.stageNewFiles = stageNewFiles;
@@ -66,6 +63,7 @@ function stageNewFiles( id, filedata, callback1) {
   let data = esIndicesConfig.hsIndices.stagedFiles;
   data.id = id;
   data.body = filedata;
+  data.body.status = "unstaged";
 
   console.log("esclient::stageNewFiles data: ", data);
 
@@ -73,29 +71,23 @@ function stageNewFiles( id, filedata, callback1) {
 }
 
 
-/**
- * list all appliances registed in OVP appliance
- * @param {function} cb     : callback funtion like function( err, appl_list )
- */
-function getAllAppliances( cb ) {
+
+function getItems( index, query, callback1) {
   let param = {
-    index: Const.appliance.db_index,
-    size: MAX_APPLIANCE_COUNT
+    index: 'stagedfiles',
+    size: 20
   };
   return _client.search( param,
     ( err, resp ) => {
       if ( err ) {
-        log.error( `Error happened during get all appliances: ${err}` );
-        cb( _mapping_error(err), null );
-      } else if ( !resp || !resp.hits || !resp.hits.hits ) {
-        log.error( `not a valid ES search result:${resp}` );
-        cb( errors.INTERNAL_ERROR, null );
+        console.log("getItems: err: ",err);
+        callback1(err);
+      } else if ( !resp  ) {
+        console.log("getItems: err: ",err);
+        callback1(err);
       } else {
-        log.debug( `return ${resp.hits.total} appliances` );
-        let appliance_list = resp.hits.hits.map( item => {
-          return _.assign( item._source, {id:item._id} );
-        });
-        cb( null, appliance_list );
+        console.log("getItems: resp: ",resp);
+        callback1(undefined, resp.hits.hits.map((item) => {return item._source;}));
       }
     });
 }

@@ -1,6 +1,8 @@
 /**
  * Created by govind on 7/22/16.
  */
+
+// var React = require('react');
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 
@@ -8,13 +10,13 @@ import PhotoFrame from './photoframe';
 // var PhotoFrame = require('./photoframe');
 var index = require("../../actions/indexactions");
 
-// var Photos = React.createClass({
-class Photos extends Component{
+class Photos extends Component {
 
   constructor(props) {
     super(props)
 
     console.log("Photos constructuor");
+
   }
 
   // getInitialState () {
@@ -29,31 +31,11 @@ class Photos extends Component{
   //   }
   // }
 
-  getInitialState() {
-    return {
-      email: 'avgovind@gmail.com',
-      password: '',
-      text: 'from getInitialState photosphotosphotosphotosphotos'
-    }
-  }
-
   /*
    * This function will be called right after the component mounting on DOM
    * and before render()
    * */
   componentWillMount() {
-    console.log("photos:componentWillMount...");
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log("photos:componentWillReceiveProps...nextProps: ", nextProps);
-
-    if (nextProps.category && this.props.category !== nextProps.category) {
-      this.props.dispatch(indexUnload(this.props.index));
-      this.props.dispatch(
-        indexLoad(nextProps.category, nextProps.index, this.props.selection));
-    }
 
   }
 
@@ -63,44 +45,48 @@ class Photos extends Component{
    * content first and this function can asyncronously trigger render() when there is data
    * */
   componentDidMount() {
-    console.log("photos:componentDidMount...");
-    this.props.dispatch(index.indexLoad("photos", {}));
+    this.props.dispatch(index.indexLoad("photos"));
 
   }
+
 
   componentWillUnmount() {
 
   }
 
-  render () {
-    const { store } = this.context;
-    console.log("this.context: ", this.context);
+  render() {
+
     console.log("this.props: ", this.props);
     console.log("this.state: ", this.state);
-
-    let elements = this.props.index.items.map((item, index) => {
-      console.log("item", item);
-      console.log("index", index);
-
-      return (
-        <div>
-          <PhotoFrame key={item.key} img_src={item.img_src} desc={item.desc} />
-        </div>
-        );
-    });
-
-    console.log("elements: ", elements);
-
     return (
       <div className="ui grid container">
-        {elements}
+        <div>
+          <PhotoFrame img_src="" desc="test description1" />
+        </div>
+        <div>
+          <PhotoFrame img_src="" desc="test description2" />
+        </div>
+        <div>
+          <PhotoFrame img_src="" desc="test description3" />
+        </div>
+        <div>
+          <PhotoFrame img_src="" desc="test description4" />
+        </div>
+        <div>
+          <PhotoFrame img_src="" desc="test description5" />
+        </div>
       </div>
     );
   }
 }
 
+// Photos.propTypes = {
+//   items: PropTypes.array.isRequired,
+//   dispatch: PropTypes.func.isRequired
+// };
+
 Photos.contextTypes = {
-  store: PropTypes.object
+ store: PropTypes.object
 };
 
 Photos.propTypes = {
@@ -114,19 +100,11 @@ Photos.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-// for react-redux
 const mapStateToProps = (state) => {
-  const category = 'photos';
-
-  console.log("######## mapStateToProps: ", state);
   return {
-    category: category,
-    index: state.index.categories[category]
 
   };
 };
 
 
-// module.exports = Photos;
-
-export default connect(mapStateToProps)(Photos);
+// export default connect(mapStateToProps)(Photos);

@@ -5,6 +5,7 @@
 var express=require("express");
 var restlayer = require('./RESTLayer');
 var homeServer = require('./homeserver/homeserver');
+var esclient = require('./elasticsearch/esclient');
 
 
 //var upload = multer().array('file');
@@ -32,6 +33,20 @@ app.post('/rest/hsfileupload', function(req,res){
 
     res.end("File uploaded.");
   });
+});
+
+app.get('/rest/photos', function(req, resp){
+  console.log("get /rest/photos: req: ", req);
+
+  esclient.getItems('photos', {}, function(err, items) {
+    // resp.json({items: [{key: 1, desc: "desc1"}, {key: 2, desc: "desc2"}, {key: 3, desc: "desc3"}]});
+    if (err) {
+      resp.json({error: err});
+    } else {
+      resp.json({items: items});
+    }
+  });
+
 });
 
 //app.post('/rest/hsfileupload', function(req,res){
