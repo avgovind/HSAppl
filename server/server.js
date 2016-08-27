@@ -21,6 +21,9 @@ app.use(function(req, res, next) {
   next();
 });
 
+// File-server implementation using this below line
+app.use( express.static('/home/govind/HomeServer/storage/staging'));
+
 //app.post('/rest/hsfileupload', upload.array('file'), function(req,res){
 app.post('/rest/hsfileupload', function(req,res){
 
@@ -36,16 +39,27 @@ app.post('/rest/hsfileupload', function(req,res){
 });
 
 app.get('/rest/photos', function(req, resp){
-  console.log("get /rest/photos: req: ", req);
+  console.log("get /rest/photos: req: ", req.params);
+  console.log("get /rest/photos: req: ", req.query);
 
   esclient.getItems('photos', {}, function(err, items) {
     // resp.json({items: [{key: 1, desc: "desc1"}, {key: 2, desc: "desc2"}, {key: 3, desc: "desc3"}]});
     if (err) {
       resp.json({error: err});
     } else {
+      console.log("server: /rest/photos items[0]: ", items[0]);
       resp.json({items: items});
     }
   });
+
+});
+
+app.get('/rest/photo', function(req, resp){
+  console.log("get /rest/photo: req: ", req.params);
+  console.log("get /rest/photo: req: ", req.query);
+
+  resp.json({photo: {}});
+
 
 });
 

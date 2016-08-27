@@ -6,7 +6,10 @@ import { connect } from 'react-redux';
 
 import PhotoFrame from './photoframe';
 // var PhotoFrame = require('./photoframe');
-var index = require("../../actions/indexactions");
+// var index = require("../../actions/indexactions");
+
+import {indexLoad, indexUnload} from '../../actions/indexactions';
+
 
 // var Photos = React.createClass({
 class Photos extends Component{
@@ -14,7 +17,6 @@ class Photos extends Component{
   constructor(props) {
     super(props)
 
-    console.log("Photos constructuor");
   }
 
   // getInitialState () {
@@ -42,13 +44,10 @@ class Photos extends Component{
    * and before render()
    * */
   componentWillMount() {
-    console.log("photos:componentWillMount...");
 
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("photos:componentWillReceiveProps...nextProps: ", nextProps);
-
     if (nextProps.category && this.props.category !== nextProps.category) {
       this.props.dispatch(indexUnload(this.props.index));
       this.props.dispatch(
@@ -63,8 +62,7 @@ class Photos extends Component{
    * content first and this function can asyncronously trigger render() when there is data
    * */
   componentDidMount() {
-    console.log("photos:componentDidMount...");
-    this.props.dispatch(index.indexLoad("photos", {}));
+    this.props.dispatch(indexLoad("photos", {}));
 
   }
 
@@ -74,17 +72,13 @@ class Photos extends Component{
 
   render () {
     const { store } = this.context;
-    console.log("this.context: ", this.context);
-    console.log("this.props: ", this.props);
-    console.log("this.state: ", this.state);
+    console.log("photos this.props: ", this.props);
 
     let elements = this.props.index.items.map((item, index) => {
-      console.log("item", item);
-      console.log("index", index);
 
       return (
         <div>
-          <PhotoFrame key={item.key} img_src={item.img_src} desc={item.desc} />
+          <PhotoFrame id={item.filename} src={'http://192.168.1.130:3000/' + item.filename} desc={item.originalname} />
         </div>
         );
     });
@@ -106,6 +100,7 @@ Photos.contextTypes = {
 Photos.propTypes = {
   type: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
+  hosturl: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object),
   filter: PropTypes.object,
   start: PropTypes.string.isRequired,
@@ -118,7 +113,6 @@ Photos.propTypes = {
 const mapStateToProps = (state) => {
   const category = 'photos';
 
-  console.log("######## mapStateToProps: ", state);
   return {
     category: category,
     index: state.index.categories[category]

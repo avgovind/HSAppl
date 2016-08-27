@@ -10,12 +10,14 @@ var IndexRoute = ReactRouter.IndexRoute;
 var Main = require('../components/Main');
 var Home = require('../components/Home');
 import Photos from '../components/photos/photos';
+import PhotoFrame from '../components/photos/photoframe';
 
 var routes = (
   <Router history={hashHistory}>
     <Route path='/' component={Main}>
       <IndexRoute component={Home} />
       <Route path='/photos' component={Photos} />
+      <Route path='/photoframe' component={PhotoFrame} />
     </Route>
   </Router>
 );

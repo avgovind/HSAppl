@@ -96,8 +96,6 @@ const initialState = {
 const handlers = {
 
   [INDEX_LOAD]: (state = initialState, action) => {
-    console.log("INDEX_LOAD: state: ", state);
-    console.log("INDEX_LOAD: action: ", action);
 
     // action.category has the category
     // action.items has the content
@@ -105,19 +103,13 @@ const handlers = {
     // var newState = (Object.assign({}, state, state.categories[action.category].items = action.items));
     var newState = (Object.assign({}, state, {categories: {photos: {items: action.items}} }));
 
-    console.log("INDEX_LOAD: newState: ", newState);
-
     // return update(state, changes);
     return newState;
   },
 
   [INDEX_UNLOAD]: (state, action) => {
-    console.log("INDEX_UNLOAD: state: ", state);
-    console.log("INDEX_UNLOAD: action: ", action);
 
     var newState = (Object.assign({}, state, {categories: {photos: {items: []}} }));
-
-    console.log("INDEX_UNLOAD: newState: ", newState);
 
     return newState;
   },
@@ -130,8 +122,6 @@ const handlers = {
   [INDEX_SUCCESS]: (state, action) => {
 
     var newState = (Object.assign({}, state, {categories: {photos: {items: action.items}} }));
-
-    console.log("INDEX_SUCCESS: newState: ", newState);
 
     return newState;
   },
@@ -146,8 +136,8 @@ const handlers = {
 };
 
 export default function indexReducer (state = initialState, action) {
-  console.log("indexReducer: state: ", state);
-  console.log("indexReducer: action: ", action);
+  // console.log("indexReducer: state: ", state);
+  // console.log("indexReducer: action: ", action);
   let handler = handlers[action.type];
   if (!handler) return state;
   return { ...state, ...handler(state, action) };

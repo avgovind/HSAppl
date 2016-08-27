@@ -38,10 +38,11 @@ export function indexLoad(category, selection) {
 
     fetch(uri)
       .then(function(response) {
+        console.log("indexLoad: ", response);
         return response.json()
       }).then(function(json) {
         console.log('parsed json', json);
-        dispatch(indexSuccess("photos", json.items));
+        dispatch(indexSuccess("photos", json));
       }).catch(function(ex) {
         console.log('parsing failed', ex);
       });
@@ -61,11 +62,14 @@ export function indexUnLoad(category, selection) {
   };
 }
 
-export function indexSuccess(category, items) {
+export function indexSuccess(category, json) {
+
+  console.log("indexSuccess: json: ", json);
 
   return {
     type: INDEX_SUCCESS,
     category: category,
-    items: items
+    hosturl: json.hosturl,
+    items: json.items
   };
 }

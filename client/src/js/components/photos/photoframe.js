@@ -2,33 +2,32 @@
  * Created by govind on 7/23/16.
  */
 
-var React = require('react');
+import React, {Component, PropTypes} from 'react';
+import { connect } from 'react-redux';
+
+import {itemLoad, itemUnload} from '../../actions/itemactions';
 
 var PhotoFrame = React.createClass({
 
   getDefaultProps: function () {
-    console.log("PhotoFrame getDefaultProps");
 
     return {
-      key: 0,
-      img_src: "",
-      date: "",
-      location: "",
-      tags: "",
+      id: "000",
+      src: "jkjkjk",
       desc: 'Welcome home from props!'
     }
   },
 
-  getInitialState: function () {
-    return {
-      key: 0,
-      img_src: "",
-      date: "",
-      location: "",
-      tags: "",
-      desc: 'Welcome home from props!'
-    }
-  },
+  // getInitialState: function () {
+  //   return {
+  //     key: 0,
+  //     img_src: "",
+  //     date: "",
+  //     location: "",
+  //     tags: "",
+  //     desc: 'Welcome home from propsvvvvvvvvvvvvv!'
+  //   }
+  // },
 
   /*
    * This function will be called right after the component mounting on DOM
@@ -44,7 +43,7 @@ var PhotoFrame = React.createClass({
    * content first and this function can asyncronously trigger render() when there is data
    * */
   componentDidMount: function () {
-
+    this.props.dispatch(itemLoad("photoframe", {}));
   },
 
 
@@ -52,11 +51,25 @@ var PhotoFrame = React.createClass({
 
   },
 
+  // componentWillReceiveProps(nextProps) {
+  //   console.log("photoframe:componentWillReceiveProps...nextProps: ", nextProps);
+  //
+  //   if (nextProps.category && this.props.category !== nextProps.category) {
+  //     this.props.dispatch(itemUnload(this.props.index));
+  //     this.props.dispatch(
+  //       itemLoad(nextProps.category, nextProps.index, this.props.selection));
+  //   }
+  //
+  // },
+
   render: function () {
+
+    console.log("photoframe props: ", this.props);
+
     return (
       <div className="ui card">
         <div className="image">
-          <img src={this.props.img_src}/>
+          <img src={this.props.src}/>
         </div>
         <div className="content">
           <div className="meta">
@@ -78,6 +91,29 @@ var PhotoFrame = React.createClass({
       </div>
     );
   }
+
+
 });
 
-module.exports = PhotoFrame;
+PhotoFrame.contextTypes = {
+  store: PropTypes.object
+};
+
+PhotoFrame.propTypes = {
+  id: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired
+};
+
+const mapStateToProps = (state, props) => {
+  const category = 'photoframe';
+  return {
+    state
+
+  };
+};
+
+
+export default connect(mapStateToProps)(PhotoFrame);
+
+// module.exports = PhotoFrame;

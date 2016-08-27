@@ -74,7 +74,7 @@ function stageNewFiles( id, filedata, callback1) {
 
 function getItems( index, query, callback1) {
   let param = {
-    index: 'stagedfiles',
+    index: index,
     size: 20
   };
   return _client.search( param,

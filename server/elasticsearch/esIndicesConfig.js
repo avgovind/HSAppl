@@ -14,6 +14,19 @@ var hsIndices = {
       'mappings': {
       }
     }
+  },
+  'photos': {
+    'index': 'photos',
+    'type': 'photos',
+    'id': 'photos',
+    'body': {
+      'settings': {
+        'number_of_shards': 1,
+        'number_of_replicas': 1
+      },
+      'mappings': {
+      }
+    }
   }
 };
 
