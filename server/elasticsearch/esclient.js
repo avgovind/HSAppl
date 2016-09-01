@@ -72,10 +72,11 @@ function stageNewFiles( id, filedata, callback1) {
 
 
 
-function getItems( index, query, callback1) {
+function getItems( index, params, query, callback1) {
   let param = {
     index: index,
-    size: 20
+    from: params.from,
+    size: params.size
   };
   return _client.search( param,
     ( err, resp ) => {
@@ -87,7 +88,14 @@ function getItems( index, query, callback1) {
         callback1(err);
       } else {
         console.log("getItems: resp: ",resp);
-        callback1(undefined, resp.hits.hits.map((item) => {return item._source;}));
+        console.log("getItems: resp: ",resp.hits.hits.length);
+        let result = {
+                      total: resp.hits.total,
+                      count: resp.hits.hits.length,
+                      items: resp.hits.hits.map((item) => {return item._source;})
+        };
+
+        callback1(undefined, result);
       }
     });
 }

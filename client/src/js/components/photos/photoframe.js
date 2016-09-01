@@ -7,16 +7,22 @@ import { connect } from 'react-redux';
 
 import {itemLoad, itemUnload} from '../../actions/itemactions';
 
-var PhotoFrame = React.createClass({
+// var PhotoFrame = React.createClass({
+class PhotoFrame extends Component {
 
-  getDefaultProps: function () {
+  constructor() {
+    super();
+    this._onClickImage = this._onClickImage.bind(this);
+  }
 
-    return {
-      id: "000",
-      src: "jkjkjk",
-      desc: 'Welcome home from props!'
-    }
-  },
+  // getDefaultProps () {
+  //
+  //   return {
+  //     id: "000",
+  //     src: "jkjkjk",
+  //     desc: 'Welcome home from props!'
+  //   }
+  // }
 
   // getInitialState: function () {
   //   return {
@@ -29,27 +35,36 @@ var PhotoFrame = React.createClass({
   //   }
   // },
 
+  _onClickImage() {
+
+    console.log("onClickImage......");
+
+  }
+
+
+
+
   /*
    * This function will be called right after the component mounting on DOM
    * and before render()
    * */
-  componentWillMount: function () {
+  componentWillMount () {
 
-  },
+  }
 
   /*
    * This function will be called after render()
    * It is good idea to perform any async operations here as render can show some default
    * content first and this function can asyncronously trigger render() when there is data
    * */
-  componentDidMount: function () {
+  componentDidMount () {
     this.props.dispatch(itemLoad("photoframe", {}));
-  },
+  }
 
 
-  componentWillUnmount: function () {
+  componentWillUnmount () {
 
-  },
+  }
 
   // componentWillReceiveProps(nextProps) {
   //   console.log("photoframe:componentWillReceiveProps...nextProps: ", nextProps);
@@ -62,14 +77,32 @@ var PhotoFrame = React.createClass({
   //
   // },
 
-  render: function () {
+  render () {
 
-    console.log("photoframe props: ", this.props);
+    // console.log("photoframe props: ", this.props);
+
+    if (this.props.view === 'listview') {
+
+      return this.renderListViewItem();
+
+    } else if (this.props.view === 'slideview') {
+
+      return this.renderSlideViewItem();
+
+    } else if (this.props.view === 'fullview') {
+
+      return this.renderFullView();
+    }
+
+  }
+
+  renderListViewItem () {
+    // console.log("photoframe props: ", this.props);
 
     return (
       <div className="ui card">
         <div className="image">
-          <img src={this.props.src}/>
+          <img src={this.props.src} onclick={this._onClickImage}/>
         </div>
         <div className="content">
           <div className="meta">
@@ -90,10 +123,20 @@ var PhotoFrame = React.createClass({
         </div>
       </div>
     );
+
+  }
+
+  renderSlideViewItem () {
+
+
+  }
+
+  renderFullView () {
+
   }
 
 
-});
+};
 
 PhotoFrame.contextTypes = {
   store: PropTypes.object

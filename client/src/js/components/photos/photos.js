@@ -8,14 +8,16 @@ import PhotoFrame from './photoframe';
 // var PhotoFrame = require('./photoframe');
 // var index = require("../../actions/indexactions");
 
-import {indexLoad, indexUnload} from '../../actions/indexactions';
+import {indexLoad, indexUnload, indexNextMore} from '../../actions/indexactions';
 
 
 // var Photos = React.createClass({
 class Photos extends Component{
 
   constructor(props) {
-    super(props)
+    super(props);
+
+    this.handleScroll = this.handleScroll.bind(this);
 
   }
 
@@ -45,9 +47,28 @@ class Photos extends Component{
    * */
   componentWillMount() {
 
+
+
+  }
+
+  handleScroll(event) {
+
+    if (event.pageY === 0 ) {
+      //if pageY == 0 the page is scrolled up to the TOP.
+      // If previous items should be queried to server then this is that place
+      console.log("handleScroll UP so get previous items");
+      // this.props.dispatch(indexPrevMore("photos"));
+    } else if (event.pageY === event.view.scrollMaxY) {
+      //if pageY == 0 the page is scrolled down to the END.
+      // If next items should be queried to server then this is that place
+      console.log("handleScroll DOWN so get more ahead index: ", this.props.index);
+      this.props.dispatch(indexNextMore("photos", this.props.index));
+    }
+
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("componentWillReceiveProps: ", nextProps);
     if (nextProps.category && this.props.category !== nextProps.category) {
       this.props.dispatch(indexUnload(this.props.index));
       this.props.dispatch(
@@ -62,11 +83,13 @@ class Photos extends Component{
    * content first and this function can asyncronously trigger render() when there is data
    * */
   componentDidMount() {
-    this.props.dispatch(indexLoad("photos", {}));
+    window.addEventListener('scroll', this.handleScroll);
+    this.props.dispatch(indexLoad("photos", this.props.index));
 
   }
 
   componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
 
   }
 
@@ -74,11 +97,11 @@ class Photos extends Component{
     const { store } = this.context;
     console.log("photos this.props: ", this.props);
 
-    let elements = this.props.index.items.map((item, index) => {
+    let elements = this.props.index.result.items.map((item, index) => {
 
       return (
         <div>
-          <PhotoFrame id={item.filename} src={'http://192.168.1.130:3000/' + item.filename} desc={item.originalname} />
+          <PhotoFrame id={item.filename} src={'http://192.168.1.130:3000/' + item.filename} desc={item.originalname} view='listview'/>
         </div>
         );
     });
@@ -99,19 +122,33 @@ Photos.contextTypes = {
 
 Photos.propTypes = {
   type: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
   hosturl: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object),
-  filter: PropTypes.object,
-  start: PropTypes.string.isRequired,
-  count: PropTypes.string.isRequired,
-  total: PropTypes.string.isRequired,
+
+  index: PropTypes.shape({
+    category: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
+    ]),
+    label: PropTypes.string,
+    query: PropTypes.object,
+    filter: PropTypes.object,
+    result: {
+      begin: PropTypes.number,
+      currentBegin: PropTypes.number,
+      currentEnd: PropTypes.number,
+      total: PropTypes.number,
+      items: PropTypes.arrayOf(PropTypes.object),
+    },
+    view: PropTypes.oneOf(["table", "tiles", "list"]),
+    addRoute: PropTypes.string
+  }).isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 // for react-redux
 const mapStateToProps = (state) => {
   const category = 'photos';
+  console.log("mapStateToProps: state: ", state);
 
   return {
     category: category,

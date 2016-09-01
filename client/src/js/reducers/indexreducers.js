@@ -5,7 +5,7 @@
 import { combineReducers } from 'redux';
 import update from 'react/lib/update';
 
-import {INDEX_LOAD, INDEX_UNLOAD, INDEX_FAILURE, INDEX_REQUEST, INDEX_SUCCESS} from '../actions/indexactions';
+import {INDEX_LOAD, INDEX_UNLOAD, INDEX_SCROLL, INDEX_FAILURE, INDEX_REQUEST, INDEX_SUCCESS, INDEX_NEXT_MORE, INDEX_NEXT_SUCCESS} from '../actions/indexactions';
 
 const statusFilter = {
   all: true,
@@ -29,11 +29,13 @@ const initialState = {
       label: "Photos and Videos",
       view: 'tiles',
       sort: 'date:dsc',
-      attributes: [
-        statusAttribute,
-        {name: 'name', label: 'Name', header: true}
-      ],
-      items: []
+      result: {
+        begin: 0,
+        currentBegin: 0,
+        currentEnd: 0,
+        total: 0,
+        items: []
+      },
     },
     assets: {
       label: "Assets",
@@ -101,7 +103,8 @@ const handlers = {
     // action.items has the content
 
     // var newState = (Object.assign({}, state, state.categories[action.category].items = action.items));
-    var newState = (Object.assign({}, state, {categories: {photos: {items: action.items}} }));
+    console.log("REDUCER INDEX_LOAD: ", state);
+    var newState = (Object.assign({}, state, {categories: {photos: { result: {items: action.result.items}}} }));
 
     // return update(state, changes);
     return newState;
@@ -114,6 +117,20 @@ const handlers = {
     return newState;
   },
 
+  [INDEX_SCROLL]: (state = initialState, action) => {
+
+    // action.category has the category
+    // action.items has the content
+    console.log("REDUCER INDEX_SCROLL: ", state);
+    // var newState = (Object.assign({}, state, {categories: {photos: {pagePosition: action.pagePosition}} }));
+    var newState = { ...state, categories: {photos: {pagePosition: action.pagePosition}}};
+    // { ...state, {categories: {photos: {pagePosition: action.pagePosition}} }};
+    console.log("REDUCER INDEX_SCROLL newState: ", newState);
+
+    // return update(state, changes);
+    return newState;
+  },
+
   [INDEX_REQUEST]: (state, action) => {
 
     return state;
@@ -121,13 +138,51 @@ const handlers = {
 
   [INDEX_SUCCESS]: (state, action) => {
 
-    var newState = (Object.assign({}, state, {categories: {photos: {items: action.items}} }));
+    console.log("REDUCER INDEX_SUCCESS: ", state);
+    console.log("REDUCER INDEX_SUCCESS action: ", action);
+    // var newState = Object.assign({}, state, {categories: {photos: {items: action.items}} });
+    // var newState = { ...state, categories: {photos: {items: action.items}}};
+    var newState = { ...state, categories: {
+                      photos: {
+                              result: {
+                                total: action.result.total,
+                                currentEnd: state.categories.photos.result.currentEnd + action.result.count,
+                                items: action.result.items
+                              }
+                            }
+                          }
+                        };
+
+    console.log("REDUCER INDEX_SUCCESS: new", newState);
+
+    return newState;
+  },
+
+  [INDEX_NEXT_SUCCESS]: (state, action) => {
+
+    console.log("REDUCER INDEX_SUCCESS: ", state);
+    // var newState = Object.assign({}, state, {categories: {photos: {items: action.items}} });
+    // var newState = { ...state, categories: {photos: {items: action.items}}};
+    var withNextItems = state.categories.photos.result.items.concat(action.result.items);
+    // var newState = { ...state, categories: {photos: { result: {items: withNextItems}} }};
+    var newState = { ...state, categories: {
+                      photos: {
+                        result: {
+                          total: action.result.total,
+                          currentEnd: state.categories.photos.result.currentEnd + action.result.count,
+                          items: withNextItems
+                        }
+                      }
+                    }
+                    };
+
+
+    console.log("REDUCER INDEX_SUCCESS: new", newState);
 
     return newState;
   },
 
   [INDEX_FAILURE]: (state, action) => {
-
 
     return state;
   },

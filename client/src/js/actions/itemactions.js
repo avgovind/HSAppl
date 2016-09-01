@@ -5,6 +5,7 @@
 
 // var restclient = require('promised-rest-client')({url: 'http://localhost:3000'});
 import fetch from 'isomorphic-fetch';
+// import {} from 'whatwg-fetch';
 require('es6-promise').polyfill();
 
 // ITEM page
