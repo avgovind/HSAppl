@@ -29,16 +29,19 @@ export const INDEX_REQUEST = 'INDEX_REQUEST';
 
 export const INDEX_WATCHER_UPDATE = 'INDEX_WATCHER_UPDATE';
 
+
+// actions that should be moved out of this file in future
+export const SHOW_MODAL = 'SHOW_MODAL';
+
 // Action creators
 
 export function indexLoad(category, index) {
-  console.log('actions.index.js indexLoad: category', category);
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/photos';
+    let uri = 'http://localhost:3000/rest/' + category;
     let reqBody = {
-      url: '/rest/photos',
+      url: '/rest/' + category,
       category: category,
       params: {
         from: 0,
@@ -62,7 +65,7 @@ export function indexLoad(category, index) {
         return response.json()
       }).then(function(json) {
         console.log('parsed json', json);
-        dispatch(indexSuccess("photos", json));
+      dispatch(indexSuccess(category, json));
       }).catch(function(ex) {
         console.log('parsing failed', ex);
       });
@@ -71,18 +74,30 @@ export function indexLoad(category, index) {
 }
 
 export function indexNextMore(category, index) {
-  console.log('actions.index.js indexLoad: category: ', category);
-  console.log('actions.index.js indexLoad: index: ', index);
 
+  console.log("indexNextMore action index: ", index);
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/photos';
+    let uri = 'http://localhost:3000/rest/' + category;
+    // let reqBody = {
+    //   url: '/rest/' + category,
+    //   category: category,
+    //   params: {
+    //     from: index.result.currentEnd,
+    //     size: 10,
+    //   },
+    //   query: {}
+    // };
+
+    var from = index.getIn(['result', 'currentEnd']);
+    console.log("indexNextMore from: ", from);
+
     let reqBody = {
-      url: '/rest/photos',
+      url: '/rest/' + category,
       category: category,
       params: {
-        from: index.result.currentEnd,
+        from: from,
         size: 10,
       },
       query: {}
@@ -102,7 +117,7 @@ export function indexNextMore(category, index) {
         return response.json()
       }).then(function(json) {
       console.log('parsed json', json);
-      dispatch(indexNextSuccess("photos", json));
+      dispatch(indexNextSuccess(category, json));
     }).catch(function(ex) {
       console.log('parsing failed', ex);
     });
@@ -114,12 +129,12 @@ export function indexNextMore(category, index) {
 
 
 export function indexUnLoad(category, index) {
+  
+  console.log("indexUnLoad");
 
   return {
     type: INDEX_UNLOAD,
     category: category,
-    items: [
-    ]
   };
 }
 // export function indexScroll(category, pagePosition) {
@@ -133,7 +148,6 @@ export function indexUnLoad(category, index) {
 
 export function indexSuccess(category, json) {
 
-  console.log("indexSuccess: json: ", json);
 
   return {
     type: INDEX_SUCCESS,
@@ -145,12 +159,22 @@ export function indexSuccess(category, json) {
 
 export function indexNextSuccess(category, json) {
 
-  console.log("indexNextSuccess: json: ", json);
 
   return {
     type: INDEX_NEXT_SUCCESS,
     category: category,
     hosturl: json.hosturl,
     result: json.result
+  };
+}
+
+export function showModal(category, json) {
+  console.log('action showModal: category: ', category);
+  console.log('action showModal: json: ', json);
+
+  return {
+    type: SHOW_MODAL,
+    category: category,
+    data: json
   };
 }

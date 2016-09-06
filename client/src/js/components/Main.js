@@ -19,6 +19,8 @@ var HSFileUpload = require('./hsfileupload/hsfileupload');
 
 var MENU_LABELS = {
   home: 'Home',
+  contacts: 'Contacts',
+  assets: 'Assets',
   browse: 'Browse',
   messages: 'Messages',
   digitallib: 'Digital Library',
@@ -86,9 +88,12 @@ var Main = React.createClass({
             <a className="item">
               <i className="home icon"></i> <Link to="/">{MENU_LABELS.home}</Link>
             </a>
-            <a className="item">
-              <i className="grid layout icon"></i><Link to="/browse">{MENU_LABELS.browse}</Link>
-            </a>
+          <a className="item">
+            <i className="user icon"></i><Link to="/contacts">{MENU_LABELS.contacts}</Link>
+          </a>
+          <a className="item">
+            <i className="grid layout icon"></i><Link to="/browse">{MENU_LABELS.browse}</Link>
+          </a>
             <a className="item">
               <i className="mail icon"></i> <Link to="/messages">{MENU_LABELS.messages}</Link>
             </a>

@@ -4,8 +4,9 @@
 
 import { combineReducers } from 'redux';
 import update from 'react/lib/update';
+import Immutable, {List, Map} from 'immutable';
 
-import {INDEX_LOAD, INDEX_UNLOAD, INDEX_SCROLL, INDEX_FAILURE, INDEX_REQUEST, INDEX_SUCCESS, INDEX_NEXT_MORE, INDEX_NEXT_SUCCESS} from '../actions/indexactions';
+import {INDEX_LOAD, INDEX_UNLOAD, INDEX_SCROLL, INDEX_FAILURE, INDEX_REQUEST, INDEX_SUCCESS, INDEX_NEXT_MORE, INDEX_NEXT_SUCCESS, SHOW_MODAL} from '../actions/indexactions';
 
 const statusFilter = {
   all: true,
@@ -21,7 +22,8 @@ const statusAttribute = {name: 'status', label: 'Status', size: 'small',
   header: true, status: true, filter: statusFilter};
 
 // Shape of the application state that is stored in Redux store
-const initialState = {
+// const initialState = {
+const initialState = Immutable.fromJS({
   activeCategory: null,
   responsive: 'multiple',
   categories: {
@@ -29,6 +31,20 @@ const initialState = {
       label: "Photos and Videos",
       view: 'tiles',
       sort: 'date:dsc',
+      showModal: 'false',
+      result: {
+        begin: 0,
+        currentBegin: 0,
+        currentEnd: 0,
+        total: 0,
+        items: []
+      },
+    },
+    contacts: {
+      label: "Contacts",
+      view: 'tiles',
+      sort: 'date:dsc',
+      showModal: 'false',
       result: {
         begin: 0,
         currentBegin: 0,
@@ -56,15 +72,6 @@ const initialState = {
         }
       ]
     },
-    contacts: {
-      label: "Contacts",
-      view: 'table',
-      sort: 'name:asc',
-      attributes: [
-        statusAttribute,
-        {name: 'name', label: 'Name', header: true}
-      ]
-    },
     activity: {
       label: "Activity",
       view: 'table',
@@ -89,7 +96,7 @@ const initialState = {
       ]
     }
   }
-};
+});
 
 
 // ...state =>> Using object spread syntax for copying state based on documentation from
@@ -99,36 +106,54 @@ const handlers = {
 
   [INDEX_LOAD]: (state = initialState, action) => {
 
+    console.log("INDEX_LOAD action: ", action);
+    console.log("INDEX_LOAD state: ", state);
+
     // action.category has the category
     // action.items has the content
 
-    // var newState = (Object.assign({}, state, state.categories[action.category].items = action.items));
-    console.log("REDUCER INDEX_LOAD: ", state);
-    var newState = (Object.assign({}, state, {categories: {photos: { result: {items: action.result.items}}} }));
+    var newState = {};
 
+    newState = { ...state, categories: {
+      photos: {
+        result: {
+          total: action.result.total,
+          currentEnd: action.result.count,
+          items: action.result.items
+        }
+      }
+    }
+    };
+    
     // return update(state, changes);
-    return newState;
+    return state;
   },
 
   [INDEX_UNLOAD]: (state, action) => {
 
-    var newState = (Object.assign({}, state, {categories: {photos: {items: []}} }));
+    console.log("Reducer INDEX_UNLOAD action: ", action);
+
+    var newState = state
+        .setIn(
+          ['categories', action.category, 'result', 'items'],
+          []
+        )
+        .setIn(
+          ['categories', action.category, 'result', 'total'],
+          0
+        )
+        .setIn(
+          ['categories', action.category, 'result', 'currentEnd'],
+          0
+        );
+
 
     return newState;
   },
 
   [INDEX_SCROLL]: (state = initialState, action) => {
 
-    // action.category has the category
-    // action.items has the content
-    console.log("REDUCER INDEX_SCROLL: ", state);
-    // var newState = (Object.assign({}, state, {categories: {photos: {pagePosition: action.pagePosition}} }));
-    var newState = { ...state, categories: {photos: {pagePosition: action.pagePosition}}};
-    // { ...state, {categories: {photos: {pagePosition: action.pagePosition}} }};
-    console.log("REDUCER INDEX_SCROLL newState: ", newState);
-
-    // return update(state, changes);
-    return newState;
+    return state;
   },
 
   [INDEX_REQUEST]: (state, action) => {
@@ -138,46 +163,56 @@ const handlers = {
 
   [INDEX_SUCCESS]: (state, action) => {
 
-    console.log("REDUCER INDEX_SUCCESS: ", state);
-    console.log("REDUCER INDEX_SUCCESS action: ", action);
     // var newState = Object.assign({}, state, {categories: {photos: {items: action.items}} });
     // var newState = { ...state, categories: {photos: {items: action.items}}};
-    var newState = { ...state, categories: {
-                      photos: {
-                              result: {
-                                total: action.result.total,
-                                currentEnd: state.categories.photos.result.currentEnd + action.result.count,
-                                items: action.result.items
-                              }
-                            }
-                          }
-                        };
+    var newState;
 
-    console.log("REDUCER INDEX_SUCCESS: new", newState);
+    console.log("index_succeess state: ", state);
+    console.log("index_succeess action: ", action);
+
+    newState = state
+      .setIn(
+        ['categories', action.category, 'result', 'items'],
+        action.result.items
+      )
+    .setIn(
+        ['categories', action.category, 'result', 'total'],
+        action.result.total
+      )
+    .setIn(
+        ['categories', action.category, 'result', 'currentEnd'],
+        action.result.count
+      );
 
     return newState;
   },
 
   [INDEX_NEXT_SUCCESS]: (state, action) => {
 
-    console.log("REDUCER INDEX_SUCCESS: ", state);
-    // var newState = Object.assign({}, state, {categories: {photos: {items: action.items}} });
-    // var newState = { ...state, categories: {photos: {items: action.items}}};
-    var withNextItems = state.categories.photos.result.items.concat(action.result.items);
-    // var newState = { ...state, categories: {photos: { result: {items: withNextItems}} }};
-    var newState = { ...state, categories: {
-                      photos: {
-                        result: {
-                          total: action.result.total,
-                          currentEnd: state.categories.photos.result.currentEnd + action.result.count,
-                          items: withNextItems
-                        }
-                      }
-                    }
-                    };
 
+    var newState = {};
 
-    console.log("REDUCER INDEX_SUCCESS: new", newState);
+    // var withNextItems = state.categories.photos.result.items.concat(action.result.items);
+    console.log("index next success state: ", state);
+
+    var items = state.getIn(['categories', 'photos', 'result', 'items']);
+    var withNextItems = items.concat(action.result.items);
+
+    var currentEnd = state.getIn(['categories', action.category, 'result', 'currentEnd']) + action.result.count;
+
+    newState = state
+      .setIn(
+        ['categories', action.category, 'result', 'items'],
+        withNextItems
+      )
+      .setIn(
+        ['categories', action.category, 'result', 'total'],
+        action.result.total
+      )
+      .setIn(
+        ['categories', action.category, 'result', 'currentEnd'],
+        currentEnd
+      );
 
     return newState;
   },
@@ -187,13 +222,25 @@ const handlers = {
     return state;
   },
 
+  [SHOW_MODAL]: (state, action) => {
+
+    console.log('show_modal: action: ', action);
+
+    var newState = state.setIn(['categories', action.category, 'showModal'], action.data.showModal);
+
+    console.log('show_modal: newState: ', newState);
+
+    return newState;
+  },
+
 
 };
 
 export default function indexReducer (state = initialState, action) {
-  // console.log("indexReducer: state: ", state);
-  // console.log("indexReducer: action: ", action);
   let handler = handlers[action.type];
   if (!handler) return state;
-  return { ...state, ...handler(state, action) };
+
+  // return exact immutable state that is returned by handler
+  return handler(state, action);
+  // return { ...state, ...handler(state, action) };
 };

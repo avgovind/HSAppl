@@ -82,6 +82,20 @@ app.post('/rest/photos', function(req, resp){
   });
 });
 
+app.post('/rest/contacts', function(req, resp){
+  console.log("post /rest/contacts: req: ", req.body);
+
+  esclient.getItems(req.body.category, req.body.params, req.body.query, function(err, result) {
+    // resp.json({items: [{key: 1, desc: "desc1"}, {key: 2, desc: "desc2"}, {key: 3, desc: "desc3"}]});
+    if (err) {
+      resp.json({error: err});
+    } else {
+      console.log("server: /rest/contacts items[0]: ", result);
+      resp.json({result: result});
+    }
+  });
+});
+
 //app.post('/rest/hsfileupload', function(req,res){
 //  console.log(req);
 //  console.log(req.file);

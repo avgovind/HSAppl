@@ -3,10 +3,10 @@
  */
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
-
+var Modal = require('react-modal');
 import ContactInfo from './contactinfo';
 
-import {indexLoad, indexUnLoad, indexNextMore} from '../../actions/indexactions';
+import {indexLoad, indexUnLoad, indexNextMore, showModal} from '../../actions/indexactions';
 
 
 class Contacts extends Component{
@@ -15,6 +15,10 @@ class Contacts extends Component{
     super(props);
 
     this.handleScroll = this.handleScroll.bind(this);
+    this._onAddFriend = this._onAddFriend.bind(this);
+    this._showModal = this._showModal.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
 
   }
 
@@ -73,24 +77,75 @@ class Contacts extends Component{
 
   }
 
+  _onAddFriend() {
+
+    console.log("onAddFriend!!!!!");
+
+    this.openModal();
+
+  }
+
+
+  ////////////start - MODAL DIALOG FUNCTIONS/////////////
+  _showModal (show) {
+    console.log('showing modal...');
+    return (
+      <Modal
+        isOpen={show}
+        onRequestClose={this.closeModal}>
+
+        <h2 ref="subtitle">Hello</h2>
+        <button onClick={this.closeModal}>close</button>
+        <div>I am a modal</div>
+        <form>
+          <input />
+          <button>tab navigation</button>
+          <button>stays</button>
+          <button>inside</button>
+          <button>the modal</button>
+        </form>
+      </Modal>    );
+  }
+
+  openModal () {
+    this.props.dispatch(showModal("contacts", {showModal: true}));
+  }
+
+  closeModal () {
+    this.props.dispatch(showModal("contacts", {showModal: false}));
+  }
+  ////////////end - MODAL DIALOG FUNCTIONS/////////////
+
   render () {
     const { store } = this.context;
     console.log("contacts this.props: ", this.props);
 
-    let elements = this.props.index.result.items.map((item, index) => {
+    var items = this.props.index.get('result').get('items');
+
+    let elements = items.map((item, index) => {
 
       return (
-        <div>
+
+        <div className="ui items">
           <ContactInfo id={item.filename} src={'http://192.168.1.130:3000/' + item.filename} desc={item.originalname} view='listview'/>
         </div>
         );
     });
 
     console.log("elements: ", elements);
+    console.log("ShowModal: ", this.props.index.get('showModal'));
+
+    var modal = this._showModal(this.props.index.get('showModal'));
 
     return (
       <div className="ui grid container">
+        <button class="ui basic button" onClick={this._onAddFriend}>
+          <i class="icon user"></i>
+          Add Friend
+        </button>
+
         {elements}
+        {modal}
       </div>
     );
   }
@@ -132,11 +187,10 @@ const mapStateToProps = (state) => {
 
   return {
     category: category,
-    index: state.index.categories[category]
+    index: state.index.getIn(['categories', category])
 
   };
 };
-
 
 // module.exports = contacts;
 

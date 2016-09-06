@@ -27,6 +27,19 @@ var hsIndices = {
       'mappings': {
       }
     }
+  },
+  'contacts': {
+    'index': 'contacts',
+    'type': 'contacts',
+    'id': 'contacts',
+    'body': {
+      'settings': {
+        'number_of_shards': 1,
+        'number_of_replicas': 1
+      },
+      'mappings': {
+      }
+    }
   }
 };
 

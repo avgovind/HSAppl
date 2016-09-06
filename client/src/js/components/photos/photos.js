@@ -8,8 +8,8 @@ import PhotoFrame from './photoframe';
 // var PhotoFrame = require('./photoframe');
 // var index = require("../../actions/indexactions");
 
-import {indexLoad, indexUnload, indexNextMore} from '../../actions/indexactions';
-
+import {indexLoad, indexUnLoad, indexNextMore} from '../../actions/indexactions';
+import Immutable, {Map, List} from 'immutable';
 
 // var Photos = React.createClass({
 class Photos extends Component{
@@ -21,33 +21,11 @@ class Photos extends Component{
 
   }
 
-  // getInitialState () {
-  //   return {
-  //     type: 'items',
-  //     category: 'photos',
-  //     items: [],
-  //     filters: {},
-  //     start: 0,
-  //     count: 20,
-  //     total: 0
-  //   }
-  // }
-
-  getInitialState() {
-    return {
-      email: 'avgovind@gmail.com',
-      password: '',
-      text: 'from getInitialState photosphotosphotosphotosphotos'
-    }
-  }
-
   /*
    * This function will be called right after the component mounting on DOM
    * and before render()
    * */
   componentWillMount() {
-
-
 
   }
 
@@ -89,15 +67,22 @@ class Photos extends Component{
   }
 
   componentWillUnmount() {
+    console.log("photos componentWillUnmount");
+
     window.removeEventListener('scroll', this.handleScroll);
+    this.props.dispatch(indexUnLoad("photos", this.props.index));
 
   }
 
   render () {
     const { store } = this.context;
     console.log("photos this.props: ", this.props);
+    console.log("photos this.props: ", this.props.index.getIn(['result']));
 
-    let elements = this.props.index.result.items.map((item, index) => {
+    var items = this.props.index.get('result').get('items');
+
+    // let elements = this.props.index.result.items.map((item, index) => {
+    let elements = items.map((item, index) => {
 
       return (
         <div>
@@ -148,16 +133,14 @@ Photos.propTypes = {
 // for react-redux
 const mapStateToProps = (state) => {
   const category = 'photos';
-  console.log("mapStateToProps: state: ", state);
 
   return {
     category: category,
-    index: state.index.categories[category]
+    index: state.index.getIn(['categories', category])
 
   };
 };
 
 
 // module.exports = Photos;
-
 export default connect(mapStateToProps)(Photos);

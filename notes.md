@@ -3,7 +3,7 @@
 To start the client
 >> npm run start
 
-Access using http://localhost:8080
+Access using http://localhost:3010
 
 Async Redux code based on:
 https://github.com/reactjs/redux/tree/master/examples/async
@@ -13,14 +13,14 @@ Installing Semantic-UI
 `npm install gulp -g
 npm install semantic-ui --save`
 
-Photos Implementation:
+**Photos Implementation:**
 ----------------------
 Photos should be similar to Flikr style
 
 Video clips should have same cards style as Photos
 
 
-File Upload:
+**File Upload:**
 ------------
 
 
@@ -38,3 +38,6 @@ REST Client:
 -----------
 
 npm install --save isomorphic-fetch es6-promise
+
+**Reducers using Immutable:**
+http://facebook.github.io/immutable-js/

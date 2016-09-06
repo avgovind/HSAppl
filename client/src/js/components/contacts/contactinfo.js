@@ -100,29 +100,18 @@ class ContactInfo extends Component {
     // console.log("photoframe props: ", this.props);
 
     return (
-      <div className="ui card">
-        <div className="image">
-          <img src={this.props.src} onclick={this._onClickImage}/>
-        </div>
-        <div className="content">
-          <div className="meta">
-            <span className="date">{this.props.date}</span>
-          </div>
-          <div className="meta">
-            <span className="location">{this.props.location}</span>
-          </div>
-          <div className="description">
-            {this.props.desc}
-          </div>
-        </div>
-        <div className="extra content">
-          <a>
-            <i className="user icon"></i>
-            {this.props.tags}
+        <div className="item">
+          <a className="ui tiny image">
+            <img src="/images/avatar/large/stevie.jpg"/>
           </a>
+          <div className="content">
+            <a className="header">Stevie Feliciano</a>
+            <div className="description">
+              <p>Stevie Feliciano is a <a>library scientist</a> living in New York City. She likes to spend her time reading, running, and writing.</p>
+            </div>
+          </div>
         </div>
-      </div>
-    );
+      );
 
   }
 
