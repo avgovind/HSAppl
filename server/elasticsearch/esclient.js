@@ -25,6 +25,7 @@ exports.getItems = getItems;
 exports.createIndex = createIndex;
 exports.initIndices = initIndices;
 exports.stageNewFiles = stageNewFiles;
+exports.addItem = addItem;
 
 function createIndex(indexDef) {
   _client.create(indexDef, function(error, response) {
@@ -92,12 +93,36 @@ function getItems( index, params, query, callback1) {
         let result = {
                       total: resp.hits.total,
                       count: resp.hits.hits.length,
-                      items: resp.hits.hits.map((item) => {return item._source;})
+                      items: resp.hits.hits.map((item) => {
+                        var returnItem = item._source;
+                        console.log("returnItem: ", returnItem);
+                        returnItem['id'] = item._id;
+                        console.log("returnItem: later ", returnItem);
+                        return item._source;
+                      })
         };
 
         callback1(undefined, result);
       }
     });
+}
+
+function addItem(index, data, id) {
+  console.log("addItem");
+
+  var indexDocument = {
+    index: index,
+    type: index,
+    body: data
+  };
+
+  if (!id) {
+    _client.index(indexDocument, function (error, response) {
+      console.log("addItem: error", error);
+      console.log("addItem: response", response);
+    });
+  }
+
 }
 
 

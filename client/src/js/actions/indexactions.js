@@ -18,6 +18,7 @@ export const INDEX_UNLOAD = 'INDEX_UNLOAD';
 
 export const INDEX_SELECT = 'INDEX_SELECT';
 export const INDEX_QUERY = 'INDEX_QUERY';
+export const INDEX_ADD = 'INDEX_ADD';
 
 // index api
 export const INDEX_SUCCESS = 'INDEX_SUCCESS';
@@ -36,10 +37,11 @@ export const SHOW_MODAL = 'SHOW_MODAL';
 // Action creators
 
 export function indexLoad(category, index) {
+  console.log("indexLoad category", category);
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/' + category;
+    let uri = 'http://localhost:3000/rest/index/items';
     let reqBody = {
       url: '/rest/' + category,
       category: category,
@@ -72,6 +74,42 @@ export function indexLoad(category, index) {
 
   };
 }
+
+export function indexAdd(category, item) {
+  console.log
+
+  return dispatch => {
+
+    let uri = 'http://localhost:3000/rest/add/';
+    let reqBody = {
+      url: '/rest/' + category,
+      category: category,
+      item: item
+    };
+
+    let restRequest = {
+      method: "POST",
+      body: JSON.stringify(reqBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+
+    fetch(uri, restRequest)
+      .then(function(response) {
+        console.log("indexAdd: ", response);
+        return response.json()
+      }).then(function(json) {
+      console.log('indexAdd parsed json', json);
+      dispatch(indexSuccess(category, json));
+    }).catch(function(ex) {
+      console.log('indexAdd parsing failed', ex);
+    });
+
+  };
+}
+
 
 export function indexNextMore(category, index) {
 
@@ -148,6 +186,8 @@ export function indexUnLoad(category, index) {
 
 export function indexSuccess(category, json) {
 
+  console.log("indexSuccess: category: ", category);
+  console.log("indexSuccess: json: ", json);
 
   return {
     type: INDEX_SUCCESS,

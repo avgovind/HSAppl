@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 var Modal = require('react-modal');
 import ContactInfo from './contactinfo';
 
-import {indexLoad, indexUnLoad, indexNextMore, showModal} from '../../actions/indexactions';
+import {indexLoad, indexUnLoad, indexNextMore, showModal, indexAdd} from '../../actions/indexactions';
 
 
 class Contacts extends Component{
@@ -19,6 +19,11 @@ class Contacts extends Component{
     this._showModal = this._showModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.onSubmit1 = this.onSubmit1.bind(this);
+    this.onChangeFirstName = this.onChangeFirstName.bind(this);
+    this.onChangeMiddleName = this.onChangeMiddleName.bind(this);
+    this.onChangeLastName = this.onChangeLastName.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
 
   }
 
@@ -89,25 +94,60 @@ class Contacts extends Component{
   ////////////start - MODAL DIALOG FUNCTIONS/////////////
   _showModal (show) {
     console.log('showing modal...');
+
     return (
       <Modal
         isOpen={show}
         onRequestClose={this.closeModal}>
 
-        <h2 ref="subtitle">Hello</h2>
-        <button onClick={this.closeModal}>close</button>
-        <div>I am a modal</div>
-        <form>
-          <input />
-          <button>tab navigation</button>
-          <button>stays</button>
-          <button>inside</button>
-          <button>the modal</button>
-        </form>
+        <div className="ui form" onSubmit={this.onSubmit1}>
+          <div className="fields">
+            <div className="field">
+              <label>First Name</label>
+              <input placeholder="First Name" type="text" onChange={this.onChangeFirstName}></input>
+            </div>
+            <div className="field">
+              <label>Middle Name</label>
+              <input placeholder="Middle Name" type="text" onChange={this.onChangeMiddleName}></input>
+            </div>
+            <div className="field">
+              <label>Last Name</label>
+              <input placeholder="Last Name" type="text" onChange={this.onChangeLastName}></input>
+            </div>
+            <div className="field">
+              <label>eMail</label>
+              <input placeholder="email" type="text" onChange={this.onChangeEmail}></input>
+            </div>
+          </div>
+          <div className="ui submit button" onClick={this.onSubmit1}>Submit</div>
+        </div>
       </Modal>    );
   }
 
+  onSubmit1 () {
+    this.props.dispatch(indexAdd("contacts", this.state));
+  }
+
+  onChangeFirstName (e) {
+    console.log("on change firstname value ", e.target.value);
+    this.setState({firstname: e.target.value});
+  }
+  onChangeMiddleName (e) {
+    console.log("on change middle name value ", e.target.value);
+    this.setState({middlename: e.target.value});
+  }
+  onChangeLastName (e) {
+    console.log("on change lastname value ", e.target.value);
+    this.setState({lastname: e.target.value});
+  }
+  onChangeEmail (e) {
+    console.log("on change email value ", e.target.value);
+    this.setState({email: e.target.value});
+  }
+
+
   openModal () {
+
     this.props.dispatch(showModal("contacts", {showModal: true}));
   }
 
@@ -123,28 +163,36 @@ class Contacts extends Component{
     var items = this.props.index.get('result').get('items');
 
     let elements = items.map((item, index) => {
+      console.log("contacts render item: ", item);
+      console.log("contacts render index: ", index);
 
       return (
 
-        <div className="ui items">
-          <ContactInfo id={item.filename} src={'http://192.168.1.130:3000/' + item.filename} desc={item.originalname} view='listview'/>
+        <div className="ui divided items">
+          <ContactInfo id={item.id} data={item} view='listview'/>
         </div>
         );
     });
 
     console.log("elements: ", elements);
-    console.log("ShowModal: ", this.props.index.get('showModal'));
+    var showModal1 = this.props.index.get('showModal');
+    console.log("ShowModal: ", showModal1);
 
-    var modal = this._showModal(this.props.index.get('showModal'));
+    // var modal = this._showModal(this.props.index.get('showModal'));
+    var modal = this._showModal(showModal1);
+
+    console.log("ShowModal: modal: ", modal);
 
     return (
       <div className="ui grid container">
-        <button class="ui basic button" onClick={this._onAddFriend}>
-          <i class="icon user"></i>
-          Add Friend
-        </button>
+        <p>
+          <button className="ui basic button" onClick={this._onAddFriend}>
+            <i className="icon user"></i>
+            Add Friend
+          </button>
+        </p>
 
-        {elements}
+        <p>{elements}</p>
         {modal}
       </div>
     );

@@ -13,6 +13,8 @@ class ContactInfo extends Component {
   constructor() {
     super();
     this._onClickImage = this._onClickImage.bind(this);
+    this.renderListViewItem = this.renderListViewItem.bind(this);
+    this.renderFullView = this.renderFullView.bind(this);
   }
 
   // getDefaultProps () {
@@ -97,17 +99,23 @@ class ContactInfo extends Component {
   }
 
   renderListViewItem () {
-    // console.log("photoframe props: ", this.props);
+    console.log("contacts props: ", this.props);
 
     return (
         <div className="item">
-          <a className="ui tiny image">
-            <img src="/images/avatar/large/stevie.jpg"/>
-          </a>
+          <div className="image">
+            <img src="/images/wireframe/image.png"></img>
+          </div>
           <div className="content">
-            <a className="header">Stevie Feliciano</a>
+            <a className="header">{this.props.data.firstname}  {this.props.data.middlename} {this.props.data.lastname}</a>
+            <div className="meta">
+              <span>Description</span>
+            </div>
             <div className="description">
-              <p>Stevie Feliciano is a <a>library scientist</a> living in New York City. She likes to spend her time reading, running, and writing.</p>
+              <p>{this.props.data.email}</p>
+            </div>
+            <div className="extra">
+              Additional Details
             </div>
           </div>
         </div>

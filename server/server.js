@@ -96,6 +96,28 @@ app.post('/rest/contacts', function(req, resp){
   });
 });
 
+app.post('/rest/index/items', function(req, resp){
+  console.log("post /rest/index/items: req: ", req.body);
+
+  esclient.getItems(req.body.category, req.body.params, req.body.query, function(err, result) {
+    // resp.json({items: [{key: 1, desc: "desc1"}, {key: 2, desc: "desc2"}, {key: 3, desc: "desc3"}]});
+    if (err) {
+      resp.json({error: err});
+    } else {
+      console.log("/rest/index/items items[0]: ", result);
+      resp.json({result: result});
+    }
+  });
+});
+
+app.post('/rest/add', function(req, resp){
+  console.log("/rest/add req ", req.body);
+
+  let body = req.body;
+
+  esclient.addItem(body.category, body.item);
+});
+
 //app.post('/rest/hsfileupload', function(req,res){
 //  console.log(req);
 //  console.log(req.file);

@@ -31,7 +31,7 @@ const initialState = Immutable.fromJS({
       label: "Photos and Videos",
       view: 'tiles',
       sort: 'date:dsc',
-      showModal: 'false',
+      showModal: false,
       result: {
         begin: 0,
         currentBegin: 0,
@@ -114,17 +114,32 @@ const handlers = {
 
     var newState = {};
 
-    newState = { ...state, categories: {
-      photos: {
-        result: {
-          total: action.result.total,
-          currentEnd: action.result.count,
-          items: action.result.items
+    if (action.category === 'photos') {
+      newState = { ...state, categories: {
+          photos: {
+            result: {
+              total: action.result.total,
+              currentEnd: action.result.count,
+              items: action.result.items
+            }
+          }
         }
-      }
-    }
-    };
-    
+      };
+    } else if (action.category === 'contacts') {
+      newState = {
+        ...state, categories: {
+          contacts: {
+            result: {
+              total: action.result.total,
+              currentEnd: action.result.count,
+              items: action.result.items
+            }
+          }
+        }
+      };
+    } else newState = state;
+
+
     // return update(state, changes);
     return state;
   },
@@ -194,8 +209,9 @@ const handlers = {
 
     // var withNextItems = state.categories.photos.result.items.concat(action.result.items);
     console.log("index next success state: ", state);
+    console.log("index next success action: ", action);
 
-    var items = state.getIn(['categories', 'photos', 'result', 'items']);
+    var items = state.getIn(['categories', action.category, 'result', 'items']);
     var withNextItems = items.concat(action.result.items);
 
     var currentEnd = state.getIn(['categories', action.category, 'result', 'currentEnd']) + action.result.count;
