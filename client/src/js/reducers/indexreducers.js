@@ -6,7 +6,7 @@ import { combineReducers } from 'redux';
 import update from 'react/lib/update';
 import Immutable, {List, Map} from 'immutable';
 
-import {INDEX_LOAD, INDEX_UNLOAD, INDEX_SCROLL, INDEX_FAILURE, INDEX_REQUEST, INDEX_SUCCESS, INDEX_NEXT_MORE, INDEX_NEXT_SUCCESS, SHOW_MODAL} from '../actions/indexactions';
+import {INDEX_NAV, INDEX_LOAD, INDEX_UNLOAD, INDEX_SCROLL, INDEX_FAILURE, INDEX_REQUEST, INDEX_SUCCESS, INDEX_NEXT_MORE, INDEX_NEXT_SUCCESS, SHOW_MODAL} from '../actions/indexactions';
 
 const statusFilter = {
   all: true,
@@ -38,6 +38,14 @@ const initialState = Immutable.fromJS({
         currentEnd: 0,
         total: 0,
         items: []
+      },
+    },
+    photosframe: {
+      label: "Photos Frame",
+      view: 'fullview',
+      showModal: false,
+      result: {
+        photo: {}
       },
     },
     contacts: {
@@ -237,12 +245,21 @@ const handlers = {
 
     return state;
   },
+  [INDEX_NAV]: (state, action) => {
+    console.log('index nav: action: ', action);
+
+    var newState = state.setIn(['categories', action.category, 'result', 'photo'], action.data);
+
+    console.log('index nav: newState: ', newState);
+
+    return newState;
+  },
 
   [SHOW_MODAL]: (state, action) => {
 
     console.log('show_modal: action: ', action);
-
     var newState = state.setIn(['categories', action.category, 'showModal'], action.data.showModal);
+
 
     console.log('show_modal: newState: ', newState);
 

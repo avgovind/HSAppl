@@ -13,6 +13,7 @@ var Home = require('../components/Home');
 import Photos from '../components/photos/photos';
 import PhotoFrame from '../components/photos/photoframe';
 import Contacts from '../components/contacts/contacts';
+import history from '../RouteHistory'
 
 // var routes = (
 //   <Router history={browserHistory}>
@@ -25,7 +26,7 @@ import Contacts from '../components/contacts/contacts';
 //   </Router>
 // );
 var routes = (
-  <Router history={browserHistory}>
+  <Router history={history}>
     <Route path='/' component={Main}>
       <IndexRoute component={Home} />
       <Route path='/photos' component={Photos} />

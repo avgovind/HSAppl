@@ -8,7 +8,7 @@ import PhotoFrame from './photoframe';
 // var PhotoFrame = require('./photoframe');
 // var index = require("../../actions/indexactions");
 
-import {indexLoad, indexUnLoad, indexNextMore} from '../../actions/indexactions';
+import {indexLoad, indexUnLoad, indexNextMore, indexNav} from '../../actions/indexactions';
 import Immutable, {Map, List} from 'immutable';
 
 // var Photos = React.createClass({
@@ -18,6 +18,7 @@ class Photos extends Component{
     super(props);
 
     this.handleScroll = this.handleScroll.bind(this);
+    this.onClick = this.onClick.bind(this);
 
   }
 
@@ -43,6 +44,11 @@ class Photos extends Component{
       this.props.dispatch(indexNextMore("photos", this.props.index));
     }
 
+  }
+
+  onClick(e) {
+    console.log("photos clicked ", e);
+    this.props.dispatch(indexNav("/photoframe", "photoframe", e));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -83,12 +89,18 @@ class Photos extends Component{
 
     // let elements = this.props.index.result.items.map((item, index) => {
     let elements = items.map((item, index) => {
+      console.log("photos render item: ", item);
 
+      // return (
+      //   <div>
+      //     <PhotoFrame id={item.filename} src={'http://192.168.1.130:3000/' + item.filename} desc={item.originalname} view='listview' onSelect={this.onClick}/>
+      //   </div>
+      // );
       return (
         <div>
-          <PhotoFrame id={item.filename} src={'http://192.168.1.130:3000/' + item.filename} desc={item.originalname} view='listview'/>
+          <PhotoFrame photoitem={item} view='listview' onSelect={this.onClick}/>
         </div>
-        );
+      );
     });
 
     console.log("elements: ", elements);

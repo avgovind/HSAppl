@@ -4,6 +4,9 @@
 
 // var restclient = require('promised-rest-client')({url: 'http://localhost:3000'});
 import fetch from 'isomorphic-fetch';
+
+import history from '../RouteHistory';
+
 // import {fetch} from 'whatwg-fetch';
 require('es6-promise').polyfill();
 
@@ -217,4 +220,17 @@ export function showModal(category, json) {
     category: category,
     data: json
   };
+}
+
+export function indexNav (path, category, json) {
+  console.log("indexactions: indexNav path:", path);
+  console.log("indexactions: indexNav json:", json);
+
+  history.pushState(null, (path || `/${category}`));
+  return {
+    type: INDEX_NAV,
+    category: category,
+    data: json
+  };
+
 }

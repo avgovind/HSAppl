@@ -179,9 +179,11 @@ class Contacts extends Component{
     console.log("ShowModal: ", showModal1);
 
     // var modal = this._showModal(this.props.index.get('showModal'));
-    var modal = this._showModal(showModal1);
-
-    console.log("ShowModal: modal: ", modal);
+    var modal;
+    if( showModal1 === true) {
+      console.log("ShowModal: true");
+      modal = this._showModal(showModal1);
+    }
 
     return (
       <div className="ui grid container">

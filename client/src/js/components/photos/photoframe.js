@@ -35,14 +35,13 @@ class PhotoFrame extends Component {
   //   }
   // },
 
-  _onClickImage() {
+  _onClickImage(e) {
 
-    console.log("onClickImage......");
+    console.log("onClickImage......", e);
+
+    this.props.onSelect(this.props.photoitem);
 
   }
-
-
-
 
   /*
    * This function will be called right after the component mounting on DOM
@@ -78,8 +77,9 @@ class PhotoFrame extends Component {
   // },
 
   render () {
+    const { store } = this.context;
 
-    // console.log("photoframe props: ", this.props);
+    console.log("photoframe props: ", this.props);
 
     if (this.props.view === 'listview') {
 
@@ -89,30 +89,31 @@ class PhotoFrame extends Component {
 
       return this.renderSlideViewItem();
 
-    } else if (this.props.view === 'fullview') {
+    } else {
 
       return this.renderFullView();
+
     }
 
   }
 
   renderListViewItem () {
-    // console.log("photoframe props: ", this.props);
+    console.log("photoframe listview props: ", this.props);
 
     return (
       <div className="ui card">
         <div className="image">
-          <img src={this.props.src} onclick={this._onClickImage}/>
+          <img src={'http://192.168.1.130:3000/' + this.props.photoitem.filename} onClick={this._onClickImage}/>
         </div>
         <div className="content">
           <div className="meta">
-            <span className="date">{this.props.date}</span>
+            <span className="date">{this.props.photoitem.exif.File['File Modified Date']}</span>
           </div>
           <div className="meta">
             <span className="location">{this.props.location}</span>
           </div>
           <div className="description">
-            {this.props.desc}
+            {this.props.photoitem.originalname}
           </div>
         </div>
         <div className="extra content">
@@ -123,7 +124,6 @@ class PhotoFrame extends Component {
         </div>
       </div>
     );
-
   }
 
   renderSlideViewItem () {
@@ -132,7 +132,34 @@ class PhotoFrame extends Component {
   }
 
   renderFullView () {
+    // console.log("photoframe renderFullView props: ", this.props);
+    var photo = this.props.photoitem1.get('result').get('photo');
+    console.log("photoframe renderFullView photo: ", photo);
 
+    return (
+      <div className="ui grid container">
+      <div className="ui  fluid card">
+          <img className="ui fluid image" src={'http://192.168.1.130:3000/' + photo.filename} onClick={this._onClickImage}/>
+        <div className="content">
+          <div className="meta">
+            <span className="date"></span>
+          </div>
+          <div className="meta">
+            <span className="location"></span>
+          </div>
+          <div className="description">
+            {photo.originalname}
+          </div>
+        </div>
+        <div className="extra content">
+          <a>
+            <i className="user icon"></i>
+            {this.props.tags}
+          </a>
+        </div>
+      </div>
+      </div>
+    );
   }
 
 
@@ -143,15 +170,33 @@ PhotoFrame.contextTypes = {
 };
 
 PhotoFrame.propTypes = {
-  id: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
-  desc: PropTypes.string.isRequired
+
+  photoitem1: PropTypes.shape({
+    category: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
+    ]),
+    label: PropTypes.string,
+    view: PropTypes.string.isRequired,
+    result: {
+      photo: PropTypes.arrayOf(PropTypes.object),
+    },
+    addRoute: PropTypes.string
+  }).isRequired,
+  photoitem: PropTypes.object,
+  dispatch: PropTypes.func.isRequired
+
+
 };
 
 const mapStateToProps = (state, props) => {
   const category = 'photoframe';
+
+  console.log("mapStateToProps state: ", state);
+
   return {
-    state
+    category: category,
+    photoitem1: state.index.getIn(['categories', category])
 
   };
 };
