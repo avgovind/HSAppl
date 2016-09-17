@@ -5,16 +5,14 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 
-import {itemLoad, itemUnload} from '../../actions/itemactions';
+import {itemLoad, itemUnload} from '../actions/itemactions';
 
-// var ContactInfo = React.createClass({
-class ContactInfo extends Component {
+// var PhotoFrame = React.createClass({
+class Item extends Component {
 
   constructor() {
     super();
     this._onClick = this._onClick.bind(this);
-    this.renderListViewItem = this.renderListViewItem.bind(this);
-    this.renderFullView = this.renderFullView.bind(this);
   }
 
   // getDefaultProps () {
@@ -37,15 +35,13 @@ class ContactInfo extends Component {
   //   }
   // },
 
-  _onClick() {
+  _onClick(e) {
 
-    console.log("contactInfo onClick......");
-    this.props.onSelect(this.props.data);
+    console.log("item onClick......", e);
+
+    this.props.onSelect(this.props.item);
 
   }
-
-
-
 
   /*
    * This function will be called right after the component mounting on DOM
@@ -61,7 +57,7 @@ class ContactInfo extends Component {
    * content first and this function can asyncronously trigger render() when there is data
    * */
   componentDidMount () {
-    this.props.dispatch(itemLoad("contactinfo", {}));
+    this.props.dispatch(itemLoad("item", {}));
   }
 
 
@@ -105,21 +101,26 @@ class ContactInfo extends Component {
     console.log("item listview props: ", this.props);
 
     return (
-      <div className="ui card item" onClick={this._onClick}>
+      <div className="ui card">
         <div className="image">
-          <img src="/images/wireframe/image.png"></img>
+          <img src={'http://192.168.1.130:3000/' + this.props.photoitem.filename} onClick={this._onClickImage}/>
         </div>
         <div className="content">
-          <a className="header">{this.props.data.firstname}  {this.props.data.middlename} {this.props.data.lastname}</a>
           <div className="meta">
-            <span>Description</span>
+            <span className="date">{this.props.photoitem.exif.File['File Modified Date']}</span>
+          </div>
+          <div className="meta">
+            <span className="location">{this.props.location}</span>
           </div>
           <div className="description">
-            <p>{this.props.data.email}</p>
+            {this.props.photoitem.originalname}
           </div>
-          <div className="extra">
-            Additional Details
-          </div>
+        </div>
+        <div className="extra content">
+          <a>
+            <i className="user icon"></i>
+            {this.props.tags}
+          </a>
         </div>
       </div>
     );
@@ -132,26 +133,31 @@ class ContactInfo extends Component {
 
   renderFullView () {
     // console.log("photoframe renderFullView props: ", this.props);
-    var contact = this.props.contactitem1.get('result').get('item');
-    console.log("contactinfo renderFullView contact: ", contact);
+    var photo = this.props.photoitem1.get('result').get('item');
+    console.log("photoframe renderFullView photo: ", photo);
 
     return (
       <div className="ui grid container">
-        <div className="image">
-          <img className="ui medium image" src="/images/wireframe/image.png"></img>
-        </div>
+      <div className="ui  fluid card">
+          <img className="ui fluid image" src={'http://192.168.1.130:3000/' + photo.filename} onClick={this._onClickImage}/>
         <div className="content">
-          <a className="header">{contact.firstname}  {contact.middlename} {contact.lastname}</a>
           <div className="meta">
-            <span>Description</span>
+            <span className="date"></span>
+          </div>
+          <div className="meta">
+            <span className="location"></span>
           </div>
           <div className="description">
-            <p>{contact.email}</p>
-          </div>
-          <div className="extra">
-            Additional Details
+            {photo.originalname}
           </div>
         </div>
+        <div className="extra content">
+          <a>
+            <i className="user icon"></i>
+            {this.props.tags}
+          </a>
+        </div>
+      </div>
       </div>
     );
   }
@@ -159,12 +165,13 @@ class ContactInfo extends Component {
 
 };
 
-ContactInfo.contextTypes = {
+Item.contextTypes = {
   store: PropTypes.object
 };
 
-ContactInfo.propTypes = {
-  contactitem1: PropTypes.shape({
+Item.propTypes = {
+
+  photoitem1: PropTypes.shape({
     category: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.arrayOf(PropTypes.string)
@@ -176,21 +183,23 @@ ContactInfo.propTypes = {
     },
     addRoute: PropTypes.string
   }).isRequired,
-  contactitem: PropTypes.object,
+  photoitem: PropTypes.object,
   dispatch: PropTypes.func.isRequired
+
+
 };
 
 const mapStateToProps = (state, props) => {
-  const category = 'contactinfo';
+  const category = 'item';
 
   return {
     category: category,
-    contactitem1: state.index.getIn(['categories', category])
+    photoitem1: state.index.getIn(['categories', category])
 
   };
 };
 
 
-export default connect(mapStateToProps)(ContactInfo);
+export default connect(mapStateToProps)(Item);
 
-// module.exports = ContactInfo;
+// module.exports = PhotoFrame;

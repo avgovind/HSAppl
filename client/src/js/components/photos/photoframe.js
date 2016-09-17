@@ -6,6 +6,7 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 
 import {itemLoad, itemUnload} from '../../actions/itemactions';
+import {globalFetch} from '../../actions/indexactions';
 
 // var PhotoFrame = React.createClass({
 class PhotoFrame extends Component {
@@ -13,6 +14,7 @@ class PhotoFrame extends Component {
   constructor() {
     super();
     this._onClickImage = this._onClickImage.bind(this);
+    this._onTagInput = this._onTagInput.bind(this);
   }
 
   // getDefaultProps () {
@@ -40,6 +42,13 @@ class PhotoFrame extends Component {
     console.log("onClickImage......", e);
 
     this.props.onSelect(this.props.photoitem);
+
+  }
+  _onTagInput(e) {
+
+    console.log("onTagInput......", e.target.value);
+    this.props.dispatch(globalFetch("photoframe", {tag: e.target.value}));
+
 
   }
 
@@ -133,7 +142,7 @@ class PhotoFrame extends Component {
 
   renderFullView () {
     // console.log("photoframe renderFullView props: ", this.props);
-    var photo = this.props.photoitem1.get('result').get('photo');
+    var photo = this.props.photoitem1.get('result').get('item');
     console.log("photoframe renderFullView photo: ", photo);
 
     return (
@@ -157,6 +166,11 @@ class PhotoFrame extends Component {
             {this.props.tags}
           </a>
         </div>
+        <div className="ui left icon input  loading">
+          <input placeholder="Search..." type="text" onChange={this._onTagInput}></input>
+          <i class="search icon"></i>
+
+        </div>
       </div>
       </div>
     );
@@ -179,7 +193,7 @@ PhotoFrame.propTypes = {
     label: PropTypes.string,
     view: PropTypes.string.isRequired,
     result: {
-      photo: PropTypes.arrayOf(PropTypes.object),
+      item: PropTypes.arrayOf(PropTypes.object),
     },
     addRoute: PropTypes.string
   }).isRequired,
@@ -191,8 +205,6 @@ PhotoFrame.propTypes = {
 
 const mapStateToProps = (state, props) => {
   const category = 'photoframe';
-
-  console.log("mapStateToProps state: ", state);
 
   return {
     category: category,

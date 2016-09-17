@@ -33,6 +33,7 @@ export const INDEX_REQUEST = 'INDEX_REQUEST';
 
 export const INDEX_WATCHER_UPDATE = 'INDEX_WATCHER_UPDATE';
 
+export const FETCH_SUCCESS = 'FETCH_SUCCESS';
 
 // actions that should be moved out of this file in future
 export const SHOW_MODAL = 'SHOW_MODAL';
@@ -234,3 +235,53 @@ export function indexNav (path, category, json) {
   };
 
 }
+
+export function globalFetch(category, query) {
+  console.log("indexactions: fetch catgegory:", category);
+  console.log("indexactions: fetch query:", query);
+
+  return dispatch => {
+
+    let uri = 'http://localhost:3000/rest/fetch/';
+    let reqBody = {
+      url: '/rest/' + category,
+      category: category,
+      query: query
+    };
+
+    let restRequest = {
+      method: "POST",
+      body: JSON.stringify(reqBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+
+    fetch(uri, restRequest)
+      .then(function(response) {
+        console.log("fetch: ", response);
+        return response.json()
+      }).then(function(json) {
+      console.log('fetch parsed json', json);
+      dispatch(fetchSuccess(category, json));
+    }).catch(function(ex) {
+      console.log('fetch parsing failed', ex);
+    });
+
+  };
+}
+
+export function fetchSuccess(category, json) {
+
+  console.log("fetchSuccess: category: ", category);
+  console.log("fetchSuccess: json: ", json);
+
+  return {
+    type: FETCH_SUCCESS,
+    category: category,
+    hosturl: json.hosturl,
+    result: json.result
+  };
+}
+

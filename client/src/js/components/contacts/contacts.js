@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 var Modal = require('react-modal');
 import ContactInfo from './contactinfo';
 
-import {indexLoad, indexUnLoad, indexNextMore, showModal, indexAdd} from '../../actions/indexactions';
+import {indexLoad, indexUnLoad, indexNextMore, showModal, indexAdd, indexNav} from '../../actions/indexactions';
 
 
 class Contacts extends Component{
@@ -24,6 +24,7 @@ class Contacts extends Component{
     this.onChangeMiddleName = this.onChangeMiddleName.bind(this);
     this.onChangeLastName = this.onChangeLastName.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
+    this.onSelect = this.onSelect.bind(this);
 
   }
 
@@ -87,6 +88,12 @@ class Contacts extends Component{
     console.log("onAddFriend!!!!!");
 
     this.openModal();
+
+  }
+
+  onSelect(e) {
+    console.log("contacts onSelect: ", e);
+    this.props.dispatch(indexNav("/contactinfo", "contactinfo", e));
 
   }
 
@@ -169,7 +176,7 @@ class Contacts extends Component{
       return (
 
         <div className="ui divided items">
-          <ContactInfo id={item.id} data={item} view='listview'/>
+          <ContactInfo id={item.id} data={item} view='listview' onSelect={this.onSelect}/>
         </div>
         );
     });

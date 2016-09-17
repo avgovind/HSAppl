@@ -40,12 +40,25 @@ const initialState = Immutable.fromJS({
         items: []
       },
     },
+    items: {
+      label: "Index",
+      view: 'tiles',
+      sort: 'date:dsc',
+      showModal: false,
+      result: {
+        begin: 0,
+        currentBegin: 0,
+        currentEnd: 0,
+        total: 0,
+        items: []
+      },
+    },
     photosframe: {
       label: "Photos Frame",
       view: 'fullview',
       showModal: false,
       result: {
-        photo: {}
+        item: {}
       },
     },
     contacts: {
@@ -59,6 +72,14 @@ const initialState = Immutable.fromJS({
         currentEnd: 0,
         total: 0,
         items: []
+      },
+    },
+    contactinfo: {
+      label: "Contact Information",
+      view: 'fullview',
+      showModal: false,
+      result: {
+        item: {}
       },
     },
     assets: {
@@ -248,7 +269,7 @@ const handlers = {
   [INDEX_NAV]: (state, action) => {
     console.log('index nav: action: ', action);
 
-    var newState = state.setIn(['categories', action.category, 'result', 'photo'], action.data);
+    var newState = state.setIn(['categories', action.category, 'result', 'item'], action.data);
 
     console.log('index nav: newState: ', newState);
 

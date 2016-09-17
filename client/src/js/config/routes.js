@@ -13,6 +13,8 @@ var Home = require('../components/Home');
 import Photos from '../components/photos/photos';
 import PhotoFrame from '../components/photos/photoframe';
 import Contacts from '../components/contacts/contacts';
+import ContactInfo from '../components/contacts/contactinfo';
+import Items from '../components/items';
 import history from '../RouteHistory'
 
 // var routes = (
@@ -29,9 +31,11 @@ var routes = (
   <Router history={history}>
     <Route path='/' component={Main}>
       <IndexRoute component={Home} />
+      <Route path='/items' component={Items} />
       <Route path='/photos' component={Photos} />
       <Route path='/photoframe' component={PhotoFrame} />
       <Route path='/contacts' component={Contacts} />
+      <Route path='/contactinfo' component={ContactInfo} />
     </Route>
   </Router>
 );
