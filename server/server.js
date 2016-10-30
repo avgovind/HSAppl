@@ -7,6 +7,7 @@ var restlayer = require('./RESTLayer');
 var homeServer = require('./homeserver/homeserver');
 var esclient = require('./elasticsearch/esclient');
 var bodyParser = require('body-parser');
+var child_process = require("./childprocess/childprocess");
 
 //var upload = multer().array('file');
 
@@ -24,7 +25,7 @@ app.use(function(req, res, next) {
 // parse application/json
 // To parse body coming with POST requests
 // Without this body will not be accessible in POST request handlers
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 
 // File-server implementation using this below line
@@ -131,6 +132,8 @@ app.post('/rest/add', function(req, resp){
 
 homeServer.init();
 restlayer.init();
+
+// child_process.triggerFileDigest();
 
 app.listen(3000,function(){
   console.log("Working on port 3000");

@@ -68,14 +68,20 @@ function stageNewFiles( id, filedata, callback1) {
 
   console.log("esclient::stageNewFiles data: ", data);
 
-  _client.index(data);
+  _client.index(data, callback1);
 }
 
 
 
 function getItems( index, params, query, callback1) {
+
+  var indexName = index;
+
+  if(index === "digitallibrary")
+    indexName = "documents";
+
   let param = {
-    index: index,
+    index: indexName,
     from: params.from,
     size: params.size
   };

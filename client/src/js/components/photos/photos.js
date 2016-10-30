@@ -97,7 +97,7 @@ class Photos extends Component{
       //   </div>
       // );
       return (
-        <div>
+        <div className="raised segment">
           <PhotoFrame photoitem={item} view='listview' onSelect={this.onClick}/>
         </div>
       );
@@ -106,8 +106,51 @@ class Photos extends Component{
     console.log("elements: ", elements);
 
     return (
-      <div className="ui grid container">
-        {elements}
+      <div className="ui container stacked segment">
+
+        <div className="ui menu">
+          <a className="item">
+            Location
+          </a>
+          <div className="ui floating labeled icon dropdown button">
+            <i className="filter icon"></i>
+            <span className="text">Camera</span>
+            <div className="menu">
+              <div className="header">
+                Search Issues
+              </div>
+              <div className="ui left icon input">
+                <i className="search icon"></i>
+                <input name="search" placeholder="Search..." type="text"></input>
+              </div>
+              <div className="header">
+                <i className="tags icon"></i>
+                Filter by tag
+              </div>
+              <div className="item">
+                <div className="ui red empty circular label"></div>
+                Important
+              </div>
+              <div className="item">
+                <div className="ui blue empty circular label"></div>
+                Announcement
+              </div>
+              <div className="item">
+                <div className="ui black empty circular label"></div>
+                Discussion
+              </div>
+            </div>
+          </div>
+          <a className="item">
+            Date
+          </a>
+          <a className="item">
+            Rating
+          </a>
+        </div>
+        <div className="ui internally celled grid">
+          {elements}
+        </div>
       </div>
     );
   }

@@ -4,7 +4,7 @@
 var hsIndices = {
   'stagedFiles': {
     'index': 'stagedfiles',
-    'type': 'stagedfile',
+    'type': 'stagedfiles',
     'id': 'stagedfile',
     'body': {
       'settings': {
@@ -19,6 +19,32 @@ var hsIndices = {
     'index': 'photos',
     'type': 'photos',
     'id': 'photos',
+    'body': {
+      'settings': {
+        'number_of_shards': 1,
+        'number_of_replicas': 1
+      },
+      'mappings': {
+      }
+    }
+  },
+  'documents': {
+    'index': 'documents',
+    'type': 'documents',
+    'id': 'documents',
+    'body': {
+      'settings': {
+        'number_of_shards': 1,
+        'number_of_replicas': 1
+      },
+      'mappings': {
+      }
+    }
+  },
+  'digitallibrary': {
+    'index': 'digitallibrary',
+    'type': 'digitallibrary',
+    'id': 'digitallibrary',
     'body': {
       'settings': {
         'number_of_shards': 1,

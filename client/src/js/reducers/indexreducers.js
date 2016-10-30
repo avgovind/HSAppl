@@ -27,8 +27,8 @@ const initialState = Immutable.fromJS({
   activeCategory: null,
   responsive: 'multiple',
   categories: {
-    photos: {
-      label: "Photos and Videos",
+    items: {
+      label: "Index",
       view: 'tiles',
       sort: 'date:dsc',
       showModal: false,
@@ -40,8 +40,93 @@ const initialState = Immutable.fromJS({
         items: []
       },
     },
-    items: {
-      label: "Index",
+
+    browse: {
+      label: "Browse Information",
+      view: 'fullview',
+      showModal: false,
+      result: {
+        items: {}
+      },
+    },
+
+    assets: {
+      label: "Assets",
+      view: 'tiles',
+      sort: 'date:dsc',
+      showModal: false,
+      result: {
+        begin: 0,
+        currentBegin: 0,
+        currentEnd: 0,
+        total: 0,
+        items: []
+      },
+    },
+    assetinfo: {
+      label: "Asset Information",
+      view: 'fullview',
+      showModal: false,
+      result: {
+        item: {}
+      },
+    },
+    assettypes: {
+      label: "Asset Information",
+      view: 'fullview',
+      showModal: false,
+      result: {
+        items: {}
+      },
+    },
+
+    digitallibrary: {
+      label: "Digital Library",
+      view: 'tiles',
+      sort: 'date:dsc',
+      showModal: false,
+      result: {
+        begin: 0,
+        currentBegin: 0,
+        currentEnd: 0,
+        total: 0,
+        items: []
+      },
+    },
+    bookinfo: {
+      label: "Book Information",
+      view: 'fullview',
+      showModal: false,
+      result: {
+        item: {}
+      },
+    },
+    financials: {
+      label: "Financials",
+      view: 'tiles',
+      sort: 'date:dsc',
+      showModal: false,
+      result: {
+        begin: 0,
+        currentBegin: 0,
+        currentEnd: 0,
+        total: 0,
+        items: []
+      },
+    },
+    financialitem: {
+      label: "Financial Item",
+      view: 'fullview',
+      showModal: false,
+      result: {
+        item: {}
+      },
+    },
+
+
+
+    photos: {
+      label: "Photos and Videos",
       view: 'tiles',
       sort: 'date:dsc',
       showModal: false,
@@ -81,25 +166,6 @@ const initialState = Immutable.fromJS({
       result: {
         item: {}
       },
-    },
-    assets: {
-      label: "Assets",
-      view: 'list',
-      sort: 'name:asc',
-      attributes: [
-        statusAttribute,
-        {name: 'name', label: 'Name', header: true},
-        {name: 'model', label: 'Model', secondary: true,
-          filter: {
-            all: true,
-            values: [
-              { label: 'bl460c gen1', value: 'bl460c gen1' },
-              { label: 'bl460c gen2', value: 'bl460c gen2' },
-              { label: 'bl460c gen3', value: 'bl460c gen3' }
-            ]
-          }
-        }
-      ]
     },
     activity: {
       label: "Activity",
@@ -143,7 +209,11 @@ const handlers = {
 
     var newState = {};
 
-    if (action.category === 'photos') {
+    if (action.category === 'photos'
+      || action.category === 'contacts'
+      || action.category === 'assets'
+      || action.category === 'digitallibrary'
+      || action.category === 'financials') {
       newState = { ...state, categories: {
           photos: {
             result: {
@@ -154,13 +224,36 @@ const handlers = {
           }
         }
       };
-    } else if (action.category === 'contacts') {
+    // } else if (action.category === 'contacts') {
+    //   newState = {
+    //     ...state, categories: {
+    //       contacts: {
+    //         result: {
+    //           total: action.result.total,
+    //           currentEnd: action.result.count,
+    //           items: action.result.items
+    //         }
+    //       }
+    //     }
+    //   };
+    // } else if (action.category === 'assets') {
+    //   newState = {
+    //     ...state, categories: {
+    //       contacts: {
+    //         result: {
+    //           total: action.result.total,
+    //           currentEnd: action.result.count,
+    //           items: action.result.items
+    //         }
+    //       }
+    //     }
+    //   };
+    } else if (action.category === 'assettypes') {
       newState = {
         ...state, categories: {
           contacts: {
             result: {
               total: action.result.total,
-              currentEnd: action.result.count,
               items: action.result.items
             }
           }

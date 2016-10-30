@@ -1,54 +1,109 @@
 /**
  * Created by govind on 7/16/16.
  */
-var React = require('react');
+import React, {Component, PropTypes} from 'react';
+import { connect } from 'react-redux';
+import {importLocalFiles} from '../actions/actions';
 
-var Home = React.createClass({
+class Home extends Component{
 
-  getDefaultProps: function () {
-    return {
-      text: 'Welcome home from props!'
-    }
-  },
+  constructor(props) {
+    super(props);
 
-  getInitialState: function () {
-    return {
-      email: 'avgovind@gmail.com',
-      password: '',
-      text: 'from getInitialState %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-    }
-  },
+    this.onImportClick = this.onImportClick.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+
+  }
+
 
   /*
   * This function will be called right after the component mounting on DOM
   * and before render()
   * */
-  componentWillMount: function () {
+  componentWillMount () {
 
-  },
+  }
 
   /*
   * This function will be called after render()
   * It is good idea to perform any async operations here as render can show some default
   * content first and this function can asyncronously trigger render() when there is data
   * */
-  componentDidMount: function () {
+  componentDidMount () {
 
-  },
+  }
 
+  onImportClick (e) {
+    console.log("Import clicked...", this.state.importpath);
+    this.props.dispatch(importLocalFiles(this.state.importpath));
 
-  componentWillUnmount: function () {
+  }
 
-  },
+  onInputChange (e) {
+    console.log("Input changed...", e.target.value);
+    this.setState({importpath: e.target.value});
+    // this.state.importpath = e.target.value;
+  }
 
-  render: function () {
+  componentWillUnmount () {
+
+  }
+
+  render () {
     return (
       <div className="ui doubling stackable grid container">
-        {this.state.text}
+
+        <div className="ui blue container" width="100%">
+        <div className="ui fluid action input" onChange={this.onInputChange}>
+          <input placeholder="Import from local directory..." type="text"></input>
+            <button className="ui button" onClick={this.onImportClick}>Import Files</button>
+        </div>
+        <div className="ui indicating teal  progress">
+          <div className="bar">
+            <div className="progress"></div>
+          </div>
+          <div className="label">Importing Files</div>
+        </div>
+        </div>
+
 
       </div>
     );
   }
-});
+}
 
-module.exports = Home;
+
+Home.contextTypes = {
+  store: PropTypes.object
+};
+
+Home.propTypes = {
+  type: PropTypes.string.isRequired,
+  hosturl: PropTypes.string.isRequired,
+
+  index: PropTypes.shape({
+    category: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
+    ]),
+    result: {
+    },
+    view: PropTypes.oneOf(["table", "tiles", "list"]),
+    addRoute: PropTypes.string
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+const mapStateToProps = (state) => {
+  const category = 'home';
+
+  return {
+    category: category,
+    index: state.index.getIn(['categories', category])
+
+  };
+};
+
+// module.exports = Home;
+
+export default connect(mapStateToProps)(Home);

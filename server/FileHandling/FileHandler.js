@@ -4,6 +4,7 @@
 
 var esclient = require('../elasticsearch/esclient');
 var multer  = require('multer');
+var childprocess = require('../childprocess/childprocess');
 
 var {ExifImage} = require('exif');
 
@@ -28,6 +29,7 @@ var FileHandler = {
 
         console.log("FileHandler::ingestNewFiles stageNewFiles callback resp: ", resp);
         console.log("FileHandler::ingestNewFiles stageNewFiles callback err: ", err);
+        childprocess.triggerFileDigest();
 
       });
 

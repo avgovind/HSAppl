@@ -25,7 +25,10 @@ var MENU_LABELS = {
   messages: 'Messages',
   digitallib: 'Digital Library',
   financials: 'Financials',
+  medical: 'Medical Information',
   photos: 'Photos',
+  travel: 'Travel',
+  unknown: 'Unknown Content',
   content: 'Content'
 };
 
@@ -102,17 +105,28 @@ var Main = React.createClass({
               <i className="dropdown icon"></i>
               <div className="menu" onClick={this._onClick}>
                 <a className="item"><i className="camera retro icon"></i><Link to="/photos">{MENU_LABELS.photos}</Link></a>
-                <a className="item"><i className="book icon"></i><Link to="/digitallib">{MENU_LABELS.digitallib}</Link></a>
+                <a className="item"><i className="book icon"></i><Link to="/digitallibrary">{MENU_LABELS.digitallib}</Link></a>
                 <a className="item"><i className="pie chart icon"></i><Link to="/financials">{MENU_LABELS.financials}</Link></a>
+                <a className="item"><i className="cubes icon"></i><Link to="/medical">{MENU_LABELS.medical}</Link></a>
+                <a className="item"><i className="cubes icon"></i><Link to="/travel">{MENU_LABELS.travel}</Link></a>
+                <a className="item"><i className="cubes icon"></i><Link to="/assets">{MENU_LABELS.assets}</Link></a>
+                <a className="item"><i className="cubes icon"></i><Link to="/unknown">{MENU_LABELS.unknown}</Link></a>
               </div>
             </div>
             <div className="right item">
               <div className="ui input"><input placeholder="Search..." type="text"/></div>
             </div>
           </div>
-          <div>
-            <HSFileUpload/>
+          <div className="ui fluid container">
+            <div>
+              <HSFileUpload/>
+            </div>
+            <div className="ui icon fluid input">
+              <i className="search icon"></i>
+              <input placeholder="Search..." type="text"></input>
+            </div>
           </div>
+        <div class="ui divider"></div>
           <div className="ui vertical stripe segment">
             <div>{this.props.children}</div>
           </div>

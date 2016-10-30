@@ -25,16 +25,20 @@
     "grommet": "^0.6.10",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
+    "jquery": "^3.1.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-fileupload": "^2.2.0",
     "react-modal": "^1.4.0",
+    "react-pdf": "0.0.10",
+    "react-pdf-js": "^1.0.30",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
     "react-thunk": "^1.0.0",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "semantic-ui": "^2.2.2",
+    "semantic-ui": "^2.2.4",
+    "semantic-ui-react": "^0.56.1",
     "whatwg-fetch": "^1.0.0"
   }
 }
