@@ -5,6 +5,8 @@
 
 // var restclient = require('promised-rest-client')({url: 'http://localhost:3000'});
 import fetch from 'isomorphic-fetch';
+import {indexNav} from '../actions/indexactions';
+
 // import {} from 'whatwg-fetch';
 require('es6-promise').polyfill();
 
@@ -21,6 +23,7 @@ export const ITEM_UNLOAD = 'ITEM_UNLOAD';
 
 export const ITEM_SELECT = 'ITEM_SELECT';
 export const ITEM_QUERY = 'ITEM_QUERY';
+export const ITEM_DELETE = 'ITEM_DELETE';
 
 // ITEM api
 export const ITEM_SUCCESS = 'ITEM_SUCCESS';
@@ -83,6 +86,47 @@ export function itemUnLoad(category, selection) {
     items: [
     ]
   };
+}
+
+export function itemDelete(category, selection) {
+
+  console.log("itemDelete action selection: ", selection);
+
+  return dispatch => {
+
+    let uri = 'http://localhost:3000/rest/deleteitem';
+
+    let reqBody = {
+      category: category,
+      id: selection.id
+    };
+
+    let restRequest = {
+      method: "POST",
+      body: JSON.stringify(reqBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    fetch(uri, restRequest)
+      .then(function(response) {
+        console.log('parsed response', response);
+        return response.json()
+      }).then(function(json) {
+      console.log('parsed json', json);
+      dispatch(indexNav("/contacts", "contacts"));
+    }).catch(function(ex) {
+      console.log('parsing failed', ex);
+    });
+
+  };
+
+  // return {
+  //   type: ITEM_DELETE,
+  //   category: category,
+  //   id: selection.id
+  // };
 }
 
 export function itemSuccess(category, items) {

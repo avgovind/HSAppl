@@ -25,6 +25,7 @@ export const INDEX_ADD = 'INDEX_ADD';
 
 // index api
 export const INDEX_SUCCESS = 'INDEX_SUCCESS';
+export const INDEX_SUCCESS_FILTERS = 'INDEX_SUCCESS_FILTERS';
 export const INDEX_PREV_SUCCESS = 'INDEX_PREV_SUCCESS';
 export const INDEX_NEXT_SUCCESS = 'INDEX_NEXT_SUCCESS';
 
@@ -46,6 +47,7 @@ export function indexLoad(category, index) {
   return dispatch => {
 
     let uri = 'http://localhost:3000/rest/index/items';
+    // let uri = 'http://localhost:3000/rest/' + category;
     let reqBody = {
       url: '/rest/' + category,
       category: category,
@@ -69,12 +71,127 @@ export function indexLoad(category, index) {
       .then(function(response) {
         console.log("indexLoad: ", response);
         return response.json()
-      }).then(function(json) {
-        console.log('parsed json', json);
-      dispatch(indexSuccess(category, json));
+      }).then(function(items) {
+        console.log('parsed json', items);
+      dispatch(indexSuccess(category, items));
       }).catch(function(ex) {
         console.log('parsing failed', ex);
       });
+
+    let filtersuri = uri + "/filters";
+    fetch(filtersuri, restRequest)
+      .then(function(response) {
+        console.log("indexLoad: filters", response);
+        return response.json()
+      }).then(function(filters) {
+      console.log('parsed json', filters);
+      dispatch(indexSuccess(category, null, filters));
+    }).catch(function(ex) {
+      console.log('parsing failed', ex);
+    });
+
+
+
+  };
+}
+
+export function indexFilter (category, query) {
+  console.log("indexactions: indexFilter categpry:", category);
+  console.log("indexactions: indexFilter query:", query);
+
+
+  return dispatch => {
+
+    let uri = 'http://localhost:3000/rest/index/items';
+    // let uri = 'http://localhost:3000/rest/' + category;
+    let reqBody = {
+      url: '/rest/' + category,
+      category: category,
+      params: {
+        from: 0,
+        size: 10,
+      },
+      query: query
+    };
+
+    let restRequest = {
+      method: "POST",
+      body: JSON.stringify(reqBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+
+    fetch(uri, restRequest)
+      .then(function(response) {
+        console.log("indexFilter: ", response);
+        return response.json()
+      }).then(function(items) {
+      console.log('indexFilter parsed json', items);
+      dispatch(indexSuccess(category, items));
+    }).catch(function(ex) {
+      console.log('indexFilter parsing failed', ex);
+    });
+
+  };
+}
+
+
+
+export function indexNextMore(category, index, query) {
+
+  console.log("indexNextMore action query: ", query);
+
+  return dispatch => {
+
+    // let uri = 'http://localhost:3000/rest/' + category;
+    let uri = 'http://localhost:3000/rest/index/items';
+    // let reqBody = {
+    //   url: '/rest/' + category,
+    //   category: category,
+    //   params: {
+    //     from: index.result.currentEnd,
+    //     size: 10,
+    //   },
+    //   query: {}
+    // };
+
+    var from = index.getIn(['result', 'currentEnd']);
+    console.log("indexNextMore from: ", from);
+
+    let reqBody = {
+      url: '/rest/' + category,
+      category: category,
+      params: {
+        from: from,
+        size: 10,
+      },
+      query: query
+    };
+
+    console.log("indexNextMore: reqbody: ", JSON.stringify(reqBody));
+
+    let restRequest = {
+                        method: "POST",
+                        body: JSON.stringify(reqBody),
+                        headers: {
+                          "Content-Type": "application/json"
+                        }
+                      };
+
+    fetch(uri, restRequest)
+      .then(function(response) {
+        console.log("indexLoad: ", response);
+        return response.json()
+      }).then(function(json) {
+      console.log('parsed json', json);
+      dispatch(indexNextSuccess(category, json));
+    }).catch(function(ex) {
+      console.log('parsing failed', ex);
+    });
+
+
 
   };
 }
@@ -114,62 +231,6 @@ export function indexAdd(category, item) {
   };
 }
 
-
-export function indexNextMore(category, index) {
-
-  console.log("indexNextMore action index: ", index);
-
-  return dispatch => {
-
-    let uri = 'http://localhost:3000/rest/' + category;
-    // let reqBody = {
-    //   url: '/rest/' + category,
-    //   category: category,
-    //   params: {
-    //     from: index.result.currentEnd,
-    //     size: 10,
-    //   },
-    //   query: {}
-    // };
-
-    var from = index.getIn(['result', 'currentEnd']);
-    console.log("indexNextMore from: ", from);
-
-    let reqBody = {
-      url: '/rest/' + category,
-      category: category,
-      params: {
-        from: from,
-        size: 10,
-      },
-      query: {}
-    };
-
-    let restRequest = {
-                        method: "POST",
-                        body: JSON.stringify(reqBody),
-                        headers: {
-                          "Content-Type": "application/json"
-                        }
-                      };
-
-    fetch(uri, restRequest)
-      .then(function(response) {
-        console.log("indexLoad: ", response);
-        return response.json()
-      }).then(function(json) {
-      console.log('parsed json', json);
-      dispatch(indexNextSuccess(category, json));
-    }).catch(function(ex) {
-      console.log('parsing failed', ex);
-    });
-
-
-
-  };
-}
-
-
 export function indexUnLoad(category, index) {
   
   console.log("indexUnLoad");
@@ -188,17 +249,28 @@ export function indexUnLoad(category, index) {
 //   };
 // }
 
-export function indexSuccess(category, json) {
+export function indexSuccess(category, items, filters) {
 
   console.log("indexSuccess: category: ", category);
-  console.log("indexSuccess: json: ", json);
+  console.log("################ indexSuccess: items: ", items);
+  console.log("################ indexSuccess: filters: ", filters);
 
-  return {
-    type: INDEX_SUCCESS,
-    category: category,
-    hosturl: json.hosturl,
-    result: json.result
-  };
+  if(items) {
+    return {
+      type: INDEX_SUCCESS,
+      category: category,
+      hosturl: items.hosturl,
+      result: items.result
+    };
+  }
+
+  if(filters){
+    return {
+      type: INDEX_SUCCESS_FILTERS,
+      category: category,
+      result: filters
+    };
+  }
 }
 
 export function indexNextSuccess(category, json) {
@@ -222,6 +294,8 @@ export function showModal(category, json) {
     data: json
   };
 }
+
+
 
 export function indexNav (path, category, json) {
   console.log("indexactions: indexNav path:", path);

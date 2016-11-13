@@ -26,6 +26,8 @@ class DigitalLibrary extends Component{
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onSelect = this.onSelect.bind(this);
 
+    this.state = {query: {}};
+
   }
 
 
@@ -49,7 +51,7 @@ class DigitalLibrary extends Component{
       //if pageY == 0 the page is scrolled down to the END.
       // If next items should be queried to server then this is that place
       console.log("handleScroll DOWN so get more ahead index: ", this.props.index);
-      this.props.dispatch(indexNextMore("digitallibrary", this.props.index));
+      this.props.dispatch(indexNextMore("digitallibrary", this.props.index, {query: this.state.query}));
     }
 
   }
@@ -197,6 +199,10 @@ class DigitalLibrary extends Component{
             Add Books
           </button>
         </p>
+        <div className="ui label">
+          Total
+          <div className="detail">{this.props.index.get('result').get('total')}</div>
+        </div>
 
         <p>{elements}</p>
         {modal}

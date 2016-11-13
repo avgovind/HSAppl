@@ -69,8 +69,8 @@ app.get('/rest/photo', function(req, resp){
 
 });
 
-app.post('/rest/photos', function(req, resp){
-  console.log("post /rest/photos: req: ", req.body);
+app.post('/rest/index/items', function(req, resp){
+  console.log("post /rest/index/items: req: ", req.body);
 
   esclient.getItems(req.body.category, req.body.params, req.body.query, function(err, result) {
     // resp.json({items: [{key: 1, desc: "desc1"}, {key: 2, desc: "desc2"}, {key: 3, desc: "desc3"}]});
@@ -82,6 +82,17 @@ app.post('/rest/photos', function(req, resp){
     }
   });
 });
+
+app.post('/rest/index/items/filters', function(req, resp){
+  console.log("post /rest/index/items/filters: req: ", req.body);
+
+  esclient.getFilterItems("photos", "exif.Exif IFD0.Model", function(result) {
+    // resp.json({items: [{key: 1, desc: "desc1"}, {key: 2, desc: "desc2"}, {key: 3, desc: "desc3"}]});
+    console.log("server: /rest/photos items[0]: ", result);
+    resp.json({camera: result});
+  });
+});
+
 
 app.post('/rest/contacts', function(req, resp){
   console.log("post /rest/contacts: req: ", req.body);
@@ -97,26 +108,43 @@ app.post('/rest/contacts', function(req, resp){
   });
 });
 
-app.post('/rest/index/items', function(req, resp){
-  console.log("post /rest/index/items: req: ", req.body);
-
-  esclient.getItems(req.body.category, req.body.params, req.body.query, function(err, result) {
-    // resp.json({items: [{key: 1, desc: "desc1"}, {key: 2, desc: "desc2"}, {key: 3, desc: "desc3"}]});
-    if (err) {
-      resp.json({error: err});
-    } else {
-      console.log("/rest/index/items items[0]: ", result);
-      resp.json({result: result});
-    }
-  });
-});
+// app.post('/rest/index/items', function(req, resp){
+//   console.log("post /rest/index/items: req: ", req.body);
+//
+//   esclient.getItems(req.body.category, req.body.params, req.body.query, function(err, result) {
+//     // resp.json({items: [{key: 1, desc: "desc1"}, {key: 2, desc: "desc2"}, {key: 3, desc: "desc3"}]});
+//     if (err) {
+//       resp.json({error: err});
+//     } else {
+//       console.log("/rest/index/items items[0]: ", result);
+//       resp.json({result: result});
+//     }
+//   });
+// });
 
 app.post('/rest/add', function(req, resp){
   console.log("/rest/add req ", req.body);
 
+
   let body = req.body;
 
-  esclient.addItem(body.category, body.item);
+  esclient.addItem(body.category, body.item, null, function(err, result){
+    console.log("/rest/add result ", result);
+    resp.json({status: 'added', result: result});
+  });
+});
+
+
+app.post('/rest/deleteitem', function(req, resp){
+  console.log("/rest/deleteitem req ", req.body);
+
+  let body = req.body;
+
+  esclient.deleteItem(body.category, body.id, function(err, result){
+    resp.json({id: body.id, status: 'deleted', result: result});
+  });
+
+
 });
 
 //app.post('/rest/hsfileupload', function(req,res){
@@ -132,6 +160,10 @@ app.post('/rest/add', function(req, resp){
 
 homeServer.init();
 restlayer.init();
+
+// esclient.getFilterItems("photos", "exif.Exif IFD0.Model", function(res){
+//   console.log("getFilterItems", JSON.stringify(res));
+// });
 
 // child_process.triggerFileDigest();
 

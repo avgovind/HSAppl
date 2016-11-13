@@ -44,8 +44,8 @@ npm install --save isomorphic-fetch es6-promise
 http://facebook.github.io/immutable-js/
 
 
-PDF Viewer:
------------
+PDF Viewer: (Need review of the information reg PDF viewer)
+-----------------------------------------------------------
 installed 'react-pdf'
 Download PDF.js from http://mozilla.github.io/pdf.js/getting_started/#download 
 And add to index.html 
@@ -82,3 +82,49 @@ Google API Client registration:
     ]
   }
 }
+Google API Console for changing anything is at:
+https://console.developers.google.com/apis/credentials/oauthclient/971270578758-mfmfamsug6d1iea5vad34ci767gprpgi.apps.googleusercontent.com?proje
+
+
+https://accounts.google.com/o/oauth2/auth?client_id=971270578758-mfmfamsug6d1iea5vad34ci767gprpgi.apps.googleusercontent.com&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3010%2F&state={%22client_id%22%3A%22971270578758-mfmfamsug6d1iea5vad34ci767gprpgi.apps.googleusercontent.com%22%2C%22network%22%3A%22google%22%2C%22display%22%3A%22popup%22%2C%22callback%22%3A%22_hellojs_2guiudrb%22%2C%22state%22%3A%22%22%2C%22redirect_uri%22%3A%22http%3A%2F%2Flocalhost%3A3010%2F%22%2C%22scope%22%3A%22full%22}&scope=full
+
+
+
+
+
+
+Check the following blog for implementation of google contacts fetch:
+https://adodson.com/hello.js/#hellologout
+
+Installed the hellojs module:
+```
+$ npm install hellojs
+```
+
+
+##Dropdown menus for filters:
+
+The following code can be used for showing dropdown menu but the challenge is how to show the dropdown menu in the actual GUI
+```
+<div class="ui floating labeled icon dropdown button">
+  <i class="filter icon"></i>
+  <span class="text">Filter</span>
+  <div class="menu">
+    <div class="header">
+      <i class="tags icon"></i>
+      Filter by tag
+    </div>
+    <div class="item">
+      Important
+    </div>
+    <div class="item">
+      Announcement
+    </div>
+    <div class="item">
+      Discussion
+    </div>
+  </div>
+</div>
+```
+
+SOLVED: To make it work, I had to change "ui floating"  to "ui simple"

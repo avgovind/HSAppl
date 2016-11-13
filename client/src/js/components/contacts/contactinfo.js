@@ -4,8 +4,11 @@
 
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
+import hello from 'hellojs';
+// import {} from '../../config/client_ids';
 
-import {itemLoad, itemUnload} from '../../actions/itemactions';
+
+import {itemLoad, itemUnload, itemDelete} from '../../actions/itemactions';
 
 // var ContactInfo = React.createClass({
 class ContactInfo extends Component {
@@ -13,8 +16,10 @@ class ContactInfo extends Component {
   constructor() {
     super();
     this._onClick = this._onClick.bind(this);
+    this.onOptionsClick = this.onOptionsClick.bind(this);
     this.renderListViewItem = this.renderListViewItem.bind(this);
     this.renderFullView = this.renderFullView.bind(this);
+    this.onClickSocial = this.onClickSocial.bind(this);
   }
 
   // getDefaultProps () {
@@ -41,6 +46,23 @@ class ContactInfo extends Component {
 
     console.log("contactInfo onClick......");
     this.props.onSelect(this.props.data);
+
+  }
+
+  onOptionsClick(event) {
+    console.log("onOptionsClick ", event.target.getAttribute('action'));
+  //   The attribute 'action' in the menu item indicates the menu item action
+    var action = event.target.getAttribute('action');
+
+    if(action === 'delete') {
+      // Delete the contact
+      console.log("current data: ", this.props.contactitem1.get('result').get('item'));
+      console.log("current data: ", this.props.contactitem1.get('result').get('item').id);
+      var contactID = this.props.contactitem1.get('result').get('item').id;
+
+      this.props.dispatch(itemDelete("contacts", {id: contactID}));
+
+    }
 
   }
 
@@ -107,7 +129,7 @@ class ContactInfo extends Component {
     return (
       <div className="ui card item" onClick={this._onClick}>
         <div className="image">
-          <img src="/images/wireframe/image.png"></img>
+          <img ></img>
         </div>
         <div className="content">
           <a className="header">{this.props.data.firstname}  {this.props.data.middlename} {this.props.data.lastname}</a>
@@ -120,6 +142,8 @@ class ContactInfo extends Component {
           <div className="extra">
             Additional Details
           </div>
+
+
         </div>
       </div>
     );
@@ -136,24 +160,116 @@ class ContactInfo extends Component {
     console.log("contactinfo renderFullView contact: ", contact);
 
     return (
+
+
       <div className="ui grid container">
-        <div className="image">
-          <img className="ui medium image" src="/images/wireframe/image.png"></img>
-        </div>
         <div className="content">
-          <a className="header">{contact.firstname}  {contact.middlename} {contact.lastname}</a>
-          <div className="meta">
-            <span>Description</span>
+          <div className="ui red inverted segment">
+            <div className="ui grid">
+              <div className="four column row">
+                <div className="left fourteen wide column"><h3>Contact Detail</h3></div>
+                <div className="right two wide column">
+                  <div className="ui simple dropdown item">
+                    <i className="options icon"></i>
+                    <div className="menu" onClick={this.onOptionsClick}>
+                      <div className="item">
+                        Edit
+                      </div>
+                      <div className="item">
+                        Save
+                      </div>
+                      <div className="divider"></div>
+                      <div className="item">
+                        Export
+                      </div>
+                      <div className="item" action="delete">
+                        Delete
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="description">
-            <p>{contact.email}</p>
-          </div>
-          <div className="extra">
-            Additional Details
+          <div className="ui horizontal segments">
+            <div className="ui segment">
+              <img src="http://192.168.1.132:3000/d73a7b694dccfc2db24181063ccca0a5" className="ui aligned small circular image"></img>
+              <h2>
+                {contact.firstname}  {contact.middlename} {contact.lastname}
+              </h2>
+              </div>
+            <div className="ui segment">
+              <h3 className="ui segment">
+                <div className="meta">
+                  <span>Description</span>
+                </div>
+                <div className="description">
+                  <p>{contact.email}</p>
+                </div>
+                <div className="extra">
+                  Additional Details.........................................
+                </div>
+                <button className="ui google plus button" onClick={this.onClickSocial}>
+                  <i className="google plus icon"></i>
+                </button>
+              </h3>
+            </div>
           </div>
         </div>
       </div>
+
+
     );
+  }
+
+  onClickSocial () {
+    console.log("onClickSocial");
+    hello.init({
+      google: "971270578758-mfmfamsug6d1iea5vad34ci767gprpgi.apps.googleusercontent.com"
+    },{
+      redirect_uri: 'http://localhost:3010/',
+      scope: [
+        'https://www.googleapis.com/auth/plus.me',
+        'https://www.googleapis.com/auth/contacts.readonly'
+      ]
+    });
+
+    hello('google').login().then(function() {
+      console.log('You are signed in to Google');
+
+      //Now that the sign-in is through query Google contacts for matching contact
+      // hello('google').api('me/contacts').then(function(json) {
+      hello('google').api('me/contacts', 'get', {}).then(function(json) {
+        console.log('Your name is ' + json.name);
+      }, function(e) {
+        console.log('Whoops! ' + e.error.message);
+        console.log('Whoops! ' + JSON.stringify(e));
+      });
+
+
+    }, function(e) {
+      console.log('Signin error: ' + e.error.message);
+    });
+
+    hello.on('auth.login', function(auth) {
+      console.log("hello.on auth: ", auth);
+      console.log("hello.on auth: ", auth);
+
+      // Call user information, for the given network
+      hello(auth.network).api('me').then(function(r) {
+        // Inject it into the container
+        var label = document.getElementById('profile_' + auth.network);
+        if (!label) {
+          label = document.createElement('div');
+          label.id = 'profile_' + auth.network;
+          document.getElementById('profile').appendChild(label);
+        }
+        label.innerHTML = '<img src="' + r.thumbnail + '" /> Hey ' + r.name;
+      });
+    });
+
+
+
   }
 
 

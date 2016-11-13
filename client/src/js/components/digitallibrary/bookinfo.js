@@ -141,7 +141,7 @@ class BookInfo extends Component {
         <div className="ui divided items" onClick={this._onClick}>
           <div className="item">
             <div className="ui tiny image">
-              <img src={'http://192.168.1.130:3000/' + this.props.data.meta.thumbnail}></img>
+              <img src={'http://192.168.1.132:3000/' + this.props.data.meta.thumbnail}></img>
             </div>
             <div className="content">
               <a className="header">{this.props.data.originalname}</a>
@@ -193,7 +193,7 @@ class BookInfo extends Component {
             of {this.state.pages} pages
           </div>
         </div>
-        <PDF file={'http://192.168.1.130:3000/' + book.filename}
+        <PDF file={'http://192.168.1.132:3000/' + book.filename}
              page={this.state.currentPage}
              scale={2}
              onDocumentComplete={this._onDocumentCompleted}

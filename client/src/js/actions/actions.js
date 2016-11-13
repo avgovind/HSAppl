@@ -18,7 +18,7 @@ export function importLocalFiles(path, context) {
       path: path,
       context: context
     };
-
+    
     let restRequest = {
       method: "POST",
       body: JSON.stringify(reqBody),

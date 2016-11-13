@@ -3,7 +3,7 @@
  */
 
 
-import {ITEM_LOAD, ITEM_UNLOAD, ITEM_SUCCESS, ITEM_FAILURE, ITEM_NAV, ITEM_NEW,
+import {ITEM_LOAD, ITEM_UNLOAD, ITEM_SUCCESS, ITEM_FAILURE, ITEM_NAV, ITEM_NEW, ITEM_DELETE,
   ITEM_ADD, ITEM_ADD_SUCCESS, ITEM_ADD_FAILURE, ITEM_NOTIFICATIONS_SUCCESS, ITEM_MAP_SUCCESS} from '../actions/itemactions';
 
 import Immutable, {List, Map} from 'immutable';
@@ -28,6 +28,12 @@ const handlers = {
 
   },
   [ITEM_SUCCESS]: (state, action) => {
+    var newState = state;
+
+    return newState;
+
+  },
+  [ITEM_DELETE]: (state, action) => {
     var newState = state;
 
     return newState;

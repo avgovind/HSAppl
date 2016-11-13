@@ -12,7 +12,8 @@
 //import React from 'react';
 //import {Link} from 'react-router';
 //import HSFileUpload from './hsfileupload/hsfileupload';
-var React = require('react');
+import React, {Component, PropTypes} from 'react';
+// var React = require('react');
 var Link = require('react-router').Link;
 var HSFileUpload = require('./hsfileupload/hsfileupload');
 
@@ -32,42 +33,50 @@ var MENU_LABELS = {
   content: 'Content'
 };
 
+class Main extends Component {
+//
+//
+// var Main = React.createClass({
 
-var Main = React.createClass({
+  constructor () {
+    super();
+    this._onClick = this._onClick.bind(this);
+    this._onChange = this._onChange.bind(this);
+    this._onSearch = this._onSearch.bind(this);
+    this._onSearchClick = this._onSearchClick.bind(this);
 
-  getDefaultProps: function () {
-    return {
-      text: 'Loading'
-    }
-  },
+  }
 
-  getInitialState: function () {
-    return {
-      email: '',
-      password: ''
-    }
-  },
+  componentDidMount () {
 
-  componentDidMount: function () {
+  }
 
-  },
+  componentWillUnmount () {
 
-  componentWillUnmount: function () {
+  }
 
-  },
-
-  _onChange: function(event) {
+  _onChange (event) {
     this.setState({text: event.target.value});
-  },
-  _onClick: function(event) {
+  }
+
+  _onSearch (event) {
+    console.log("Main: _onSearch: event: ", event.target.value);
+    console.log("Main: _onSearch: children: ", this.props.children);
+    console.log("Main: _onSearch: children: ", this.props.children.props.route.path);
+  }
+  _onSearchClick (event) {
+    console.log("Main: _onSearchClick: event: ", event.target);
+  }
+
+  _onClick (event) {
     this.setState({text: event.target.innerText});
 
     if (event.target.innerText == MENU_LABELS.photos) {
 
     }
-  },
+  }
 
-  render: function () {
+  render () {
 
     console.log("this.props.children: ", this.props.children);
 
@@ -86,8 +95,9 @@ var Main = React.createClass({
 
 
     return (
-      <div className="pusher">
+      <div>
         <div className="ui stackable menu">
+
             <a className="item">
               <i className="home icon"></i> <Link to="/">{MENU_LABELS.home}</Link>
             </a>
@@ -117,18 +127,20 @@ var Main = React.createClass({
               <div className="ui input"><input placeholder="Search..." type="text"/></div>
             </div>
           </div>
-          <div className="ui fluid container">
-            <div>
-              <HSFileUpload/>
-            </div>
-            <div className="ui icon fluid input">
-              <i className="search icon"></i>
-              <input placeholder="Search..." type="text"></input>
+          <div className="ui container">
+            <div className="column">
+              <a>
+                <HSFileUpload/>
+              </a>
+              <a className="ui icon fluid input">
+                <i className="search icon"></i>
+                <input placeholder="Search..." type="text" onSelect={this._onSearchClick} onChange={this._onSearch}></input>
+              </a>
             </div>
           </div>
-        <div class="ui divider"></div>
+          <div class="ui divider"></div>
           <div className="ui vertical stripe segment">
-            <div>{this.props.children}</div>
+            <div>{this.props.children} onSearch={this._onSearch}</div>
           </div>
 
       </div>
@@ -156,6 +168,7 @@ var Main = React.createClass({
     //    </div>
     //);
   }
-});
+// });
+};
 
 module.exports = Main;

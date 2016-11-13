@@ -21,7 +21,9 @@ var _client = elasticsearch.Client({
 });
 
 
+exports.getFilterItems = getFilterItems;
 exports.getItems = getItems;
+exports.deleteItem = deleteItem;
 exports.createIndex = createIndex;
 exports.initIndices = initIndices;
 exports.stageNewFiles = stageNewFiles;
@@ -74,17 +76,34 @@ function stageNewFiles( id, filedata, callback1) {
 
 
 function getItems( index, params, query, callback1) {
+  console.log("getItems: index: ", index);
+  console.log("getItems: params: ", params);
+  console.log("getItems: query: ", query);
 
   var indexName = index;
 
   if(index === "digitallibrary")
     indexName = "documents";
 
+  let body = {};
+
+  if(query.hasOwnProperty('query') && query.query.hasOwnProperty('camerafilter')) {
+    console.log("$%$%$$%$%$%$%$%$%$%$");
+    let q = {match: {['exif.Exif IFD0.Model'] : query.query.camerafilter}};
+    body.query = q;
+  }
+
+  // the search can take fields and their values for filtering the resultset
+  // The body section of the query statement 'param' will have filter conditons specified
   let param = {
     index: indexName,
     from: params.from,
-    size: params.size
+    size: params.size,
+    body: body
   };
+
+  console.log("getItems param: ", JSON.stringify(param));
+
   return _client.search( param,
     ( err, resp ) => {
       if ( err ) {
@@ -101,9 +120,9 @@ function getItems( index, params, query, callback1) {
                       count: resp.hits.hits.length,
                       items: resp.hits.hits.map((item) => {
                         var returnItem = item._source;
-                        console.log("returnItem: ", returnItem);
+                        // console.log("returnItem: ", returnItem);
                         returnItem['id'] = item._id;
-                        console.log("returnItem: later ", returnItem);
+                        // console.log("returnItem: later ", returnItem);
                         return item._source;
                       })
         };
@@ -113,7 +132,54 @@ function getItems( index, params, query, callback1) {
     });
 }
 
-function addItem(index, data, id) {
+/**
+ * Function that return all unique values of a field
+ * Can be used to list filter items in the GUI
+ */
+function getFilterItems(index, field1, callback1) {
+
+  var data = {
+    'index': index,
+    'body': {
+      'aggs': {
+        'result': {
+          'terms': {
+            'field': field1,
+            'order': {
+              '_term': 'asc'
+            }
+          }
+        }
+      }
+    }
+  };
+
+  _client.search(data, function(err, resp) {
+
+    if (err == null) {
+      // RESULT IS LIKE [ { key: 'critical', doc_count: 33 },   { key: 'ok', doc_count: 2 } ]
+
+      var buckets = resp.aggregations.result.buckets;
+      // var res1 = [];
+      var res1 = [];
+
+      for (var i in buckets) {
+        console.log("each: ", JSON.stringify(buckets[i].key));
+        res1.push(buckets[i].key);
+        // res1.push({"status": buckets[i].key, "counts": buckets[i].doc_count});
+      }
+
+      callback1(res1);
+    } else {
+      log.warn("getAggregate() _client.search() : error = " + err);
+      callback1(null);
+    }
+
+  });
+
+}
+
+function addItem(index, data, id, callback1) {
   console.log("addItem");
 
   var indexDocument = {
@@ -126,6 +192,27 @@ function addItem(index, data, id) {
     _client.index(indexDocument, function (error, response) {
       console.log("addItem: error", error);
       console.log("addItem: response", response);
+      callback1(error, response);
+    });
+  }
+
+}
+
+function deleteItem(index, id, callback1) {
+  console.log("deleteItem: id:", id);
+
+  var indexDocument = {
+    index: index,
+    type: index,
+    id: id
+  };
+
+  if (id) {
+    console.log("deleteItem: before:");
+    _client.delete(indexDocument, function (error, response) {
+      console.log("addItem: error", error);
+      console.log("addItem: response", response);
+      callback1(error, response);
     });
   }
 

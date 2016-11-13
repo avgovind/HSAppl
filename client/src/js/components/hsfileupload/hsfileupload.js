@@ -74,7 +74,7 @@ var HSFileUpload = React.createClass({
 
     return (
       <FileUpload options={this.state.options}>
-        <div className="massive ui icon button" ref="chooseAndUpload"><i className="upload icon"></i>Upload Files</div>
+        <div className="large ui icon button" ref="chooseAndUpload"><i className="upload icon"></i>Upload Files</div>
       </FileUpload>
     );
     //return (
