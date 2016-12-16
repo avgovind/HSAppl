@@ -3,4 +3,6 @@
  */
 
 import { createHistory, useQueries } from 'history';
+// import { browserHistory } from 'react-router';
+
 export default useQueries(createHistory)();

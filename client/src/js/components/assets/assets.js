@@ -7,7 +7,7 @@ var Modal = require('react-modal');
 import AssetInfo from './assetinfo';
 
 import {indexLoad, indexUnLoad, indexNextMore, showModal, indexAdd, indexNav} from '../../actions/indexactions';
-
+import FolderView from '../FolderView';
 
 class Assets extends Component{
 
@@ -203,6 +203,7 @@ class Assets extends Component{
 
         <p>{elements}</p>
         {modal}
+        <FolderView name="Assets"></FolderView>
       </div>
     );
   }

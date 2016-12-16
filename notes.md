@@ -128,3 +128,9 @@ The following code can be used for showing dropdown menu but the challenge is ho
 ```
 
 SOLVED: To make it work, I had to change "ui floating"  to "ui simple"
+
+Date: Nov 19 2016
+Moving from Semantic-ui to Grommet 1.0.
+Grommet now looks more rich especially for charts in the financials module compared to Semantic-ui.
+Semantic-ui doesnt have date picker too.
+

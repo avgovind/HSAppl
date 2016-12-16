@@ -16,7 +16,7 @@ var HSFileUpload = React.createClass({
   getInitialState: function () {
     return {
       options: {
-        baseUrl:'http://localhost:3000/rest/hsfileupload',
+        baseUrl:'http://192.168.1.147:3000/rest/hsfileupload',
         param:{
           fid:0
         },

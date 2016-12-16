@@ -54,6 +54,19 @@ var hsIndices = {
       }
     }
   },
+  'messages': {
+    'index': 'messages',
+    'type': 'messages',
+    'id': 'messages',
+    'body': {
+      'settings': {
+        'number_of_shards': 1,
+        'number_of_replicas': 1
+      },
+      'mappings': {
+      }
+    }
+  },
   'contacts': {
     'index': 'contacts',
     'type': 'contacts',

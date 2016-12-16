@@ -46,8 +46,8 @@ export function indexLoad(category, index) {
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/index/items';
-    // let uri = 'http://localhost:3000/rest/' + category;
+    let uri = 'http://192.168.1.147:3000/rest/index/items';
+    // let uri = 'http://localhost:3000/rest/index/items';
     let reqBody = {
       url: '/rest/' + category,
       category: category,
@@ -102,8 +102,8 @@ export function indexFilter (category, query) {
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/index/items';
-    // let uri = 'http://localhost:3000/rest/' + category;
+    let uri = 'http://192.168.1.147:3000/rest/index/items';
+    // let uri = 'http://localhost:3000/rest/index/items';
     let reqBody = {
       url: '/rest/' + category,
       category: category,
@@ -146,7 +146,8 @@ export function indexNextMore(category, index, query) {
   return dispatch => {
 
     // let uri = 'http://localhost:3000/rest/' + category;
-    let uri = 'http://localhost:3000/rest/index/items';
+    let uri = 'http://192.168.1.147:3000/rest/index/items';
+    // let uri = 'http://localhost:3000/rest/index/items';
     // let reqBody = {
     //   url: '/rest/' + category,
     //   category: category,
@@ -201,7 +202,8 @@ export function indexAdd(category, item) {
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/add/';
+    let uri = 'http://192.168.1.147:3000/rest/add/';
+    // let uri = 'http://localhost:3000/rest/add/';
     let reqBody = {
       url: '/rest/' + category,
       category: category,
@@ -316,7 +318,8 @@ export function globalFetch(category, query) {
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/fetch/';
+    let uri = 'http://192.168.1.147:3000/rest/fetch/';
+    // let uri = 'http://localhost:3000/rest/fetch/';
     let reqBody = {
       url: '/rest/' + category,
       category: category,

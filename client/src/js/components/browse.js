@@ -6,137 +6,140 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 
+import {indexNav} from '../actions/indexactions';
+
 class Browse extends Component {
 
   constructor() {
     super();
     console.log("Browse");
+    this.onTileClick= this.onTileClick.bind(this);
+  }
+
+  onTileClick (event) {
+    console.log("on tile click: ", event.target);
+    console.log("on tile click: ", event.target.getAttribute('name'));
+    this.props.dispatch(indexNav(event.target.getAttribute('name'), event.target.getAttribute('name'), event));
+
   }
 
 
   render () {
     return (
-      <div className="ui equal width center aligned padded grid">
-        <div className="ui cube shape">
-          <div className="sides">
-            <div className="active side">
-              <div className="content">
-                <div className="center">
-                  Photos
-                </div>
+      <div className="ui equal width center aligned padded grid" featureName="potos" >
+        <div className="ui stackable cards" onClick={this.onTileClick}>
+          <div className="ui link card"  >
+            <div className="image" >
+              <img src="http://192.168.1.147:3000/f7321a6fd7a7627c25385acc792a2d0a" className="ui fluid floated image" name="contacts"></img>
+            </div>
+            <div className="content" >
+              <div className="header">Contacts</div>
+              <div className="meta">
+                <span className="category">Count 123</span>
+              </div>
+              <div className="description">
+                <p></p>
               </div>
             </div>
           </div>
-        </div>
-        <div className="ui cube shape" duration="700ms">
-          <div className="sides">
-            <div className="active side">
-              <div className="content">
-                <div className="center">
-                  Contacts
-                </div>
-              </div>
+          <div className="ui link card" >
+            <div className="image" >
+              <img src="http://192.168.1.147:3000/f7321a6fd7a7627c25385acc792a2d0a" className="ui fluid floated image" name="photos"></img>
             </div>
-            <div className="side">
-              <div className="content">
-                <div className="center">
-                  2
-                </div>
+            <div className="content" >
+              <div className="header">Photos</div>
+              <div className="meta">
+                <span className="category">Count 123</span>
               </div>
-            </div>
-            <div className="side">
-              <div className="content">
-                <div className="center">
-                  3
-                </div>
-              </div>
-            </div>
-            <div className="side">
-              <div className="content">
-                <div className="center">
-                  4
-                </div>
-              </div>
-            </div>
-            <div className="side">
-              <div className="content">
-                <div className="center">
-                  5
-                </div>
-              </div>
-            </div>
-            <div className="side">
-              <div className="content">
-                <div className="center">
-                  6
-                </div>
+              <div className="description">
+                <p></p>
               </div>
             </div>
           </div>
-        </div>
-        <div className="ui card">
-          <div className="content">
-            <div className="header">Cute Dog</div>
-            <div className="meta">2 days ago</div>
-            <div className="description">
-              <p>Cute dogs come in a variety of shapes and sizes. Some cute dogs are cute for their adorable faces, others for their tiny stature, and even others for their massive size.</p>
-              <p>Many people also have their own barometers for what makes a cute dog.</p>
+          <div className="ui link card">
+            <a class="image" >
+              <img src="http://192.168.1.147:3000/f7321a6fd7a7627c25385acc792a2d0a" className="ui fluid floated image" name="digitallibrary"></img>
+            </a>
+            <div className="content" >
+              <div className="header">Digital Library</div>
+              <div className="meta">
+                <span className="category">Count 123</span>
+              </div>
+              <div className="description">
+                <p></p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="ui four cards">
-          <a className="red card">
-            <div className="image">
+          <div className="ui link card">
+            <a class="image" >
+              <img src="http://192.168.1.147:3000/f7321a6fd7a7627c25385acc792a2d0a" className="ui fluid floated image" name="financials"></img>
+            </a>
+            <div className="content" >
+              <div className="header">Financials</div>
+              <div className="meta">
+                <span className="category">Count 123</span>
+              </div>
+              <div className="description">
+                <p></p>
+              </div>
             </div>
-          </a>
-          <a className="orange card">
-            <div className="image">
+          </div>
+          <div className="ui link card">
+            <a class="image" >
+              <img src="http://192.168.1.147:3000/f7321a6fd7a7627c25385acc792a2d0a" className="ui fluid floated image" name="medical" ></img>
+            </a>
+            <div className="content" >
+              <div className="header">Medical Records</div>
+              <div className="meta">
+                <span className="category">Count 123</span>
+              </div>
+              <div className="description">
+                <p></p>
+              </div>
             </div>
-          </a>
-          <a className="yellow card">
-            <div className="image">
+          </div>
+          <div className="ui link card">
+            <a class="image" >
+              <img src="http://192.168.1.147:3000/f7321a6fd7a7627c25385acc792a2d0a" className="ui fluid floated image" name="travel"></img>
+            </a>
+            <div className="content" >
+              <div className="header">Travel</div>
+              <div className="meta">
+                <span className="category">Count 123</span>
+              </div>
+              <div className="description">
+                <p></p>
+              </div>
             </div>
-          </a>
-          <a className="olive card">
-            <div className="image">
+          </div>
+          <div className="ui link card">
+            <a class="image" >
+              <img src="http://192.168.1.147:3000/f7321a6fd7a7627c25385acc792a2d0a" className="ui fluid floated image" name="assets"></img>
+            </a>
+            <div className="content" >
+              <div className="header">Assets</div>
+              <div className="meta">
+                <span className="category">Count 123</span>
+              </div>
+              <div className="description">
+                <p></p>
+              </div>
             </div>
-          </a>
-          <a className="green card">
-            <div className="image">
+          </div>
+          <div className="ui link card">
+            <a class="image" >
+              <img src="http://192.168.1.147:3000/f7321a6fd7a7627c25385acc792a2d0a" className="ui fluid floated image" name="unknown"></img>
+            </a>
+            <div className="content" >
+              <div className="header">Unknown</div>
+              <div className="meta">
+                <span className="category">Count 123</span>
+              </div>
+              <div className="description">
+                <p></p>
+              </div>
             </div>
-          </a>
-          <a className="teal card">
-            <div className="image">
-            </div>
-          </a>
-          <a className="blue card">
-            <div className="image">
-            </div>
-          </a>
-          <a className="violet card">
-            <div className="image">
-            </div>
-          </a>
-          <a className="purple card">
-            <div className="image">
-            </div>
-          </a>
-          <a className="pink card">
-            <div className="image">
-            </div>
-          </a>
-          <a className="brown card">
-            <div className="image">
-            </div>
-          </a>
-          <a className="grey card">
-            <div className="image">
-            </div>
-          </a>
-          <a className="black card">
-            <div className="image">
-            </div>
-          </a>
+          </div>
         </div>
         </div>
     );

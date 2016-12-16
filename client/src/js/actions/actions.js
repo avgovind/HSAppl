@@ -13,7 +13,8 @@ export function importLocalFiles(path, context) {
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/import/';
+    let uri = 'http://192.168.1.147:3000/rest/import/';
+    // let uri = 'http://localhost:3000/rest/import/';
     let reqBody = {
       path: path,
       context: context

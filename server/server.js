@@ -2,7 +2,7 @@
  * Created by govind on 7/23/16.
  */
 
-var express=require("express");
+var express = require("express");
 var restlayer = require('./RESTLayer');
 var homeServer = require('./homeserver/homeserver');
 var esclient = require('./elasticsearch/esclient');
@@ -11,7 +11,7 @@ var child_process = require("./childprocess/childprocess");
 
 //var upload = multer().array('file');
 
-var app=express();
+var app = express();
 
 // The below code is required to enable Cross Origin REST Calls
 // This is required as REST server listens on 3000 port
@@ -134,6 +134,20 @@ app.post('/rest/add', function(req, resp){
   });
 });
 
+app.post('/rest/updateitem', function(req, resp){
+  console.log("/rest/updateitem req ", req.body);
+
+  let body = req.body;
+  let data = body.data;
+
+  console.log("/rest/updateitem data: ", JSON.stringify(data));
+
+  // esclient.deleteItem(body.category, body.id, function(err, result){
+  //   resp.json({id: body.id, status: 'deleted', result: result});
+  // });
+
+
+});
 
 app.post('/rest/deleteitem', function(req, resp){
   console.log("/rest/deleteitem req ", req.body);

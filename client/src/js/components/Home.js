@@ -3,6 +3,12 @@
  */
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
+
+// import Notification from 'grommet/components/Notification';
+// import Box from 'grommet/components/Box';
+// import Button from 'grommet/components/Button';
+// import TextInput from 'grommet/components/TextInput';
+
 import {importLocalFiles} from '../actions/actions';
 
 class Home extends Component{
@@ -50,25 +56,39 @@ class Home extends Component{
   }
 
   render () {
-    return (
+
+    var state = "Importing the files from " + "<--get it from state-->";
+    // return (
+    //   <Box pad='medium' >
+    //
+    //     <Notification state={state} status="Ok" size="medium" full={false}
+    //                    percentComplete={33}/>
+    //     <TextInput placeHolder="Import from local directory..." onDOMChange={this.onInputChange}  />
+    //     <Button onClick={this.onImportClick} label="Bulk Import Files" primary={true} />
+    //   </Box>
+    //
+    // );
+    return(
       <div className="ui doubling stackable grid container">
 
         <div className="ui blue container" width="100%">
-        <div className="ui fluid action input" onChange={this.onInputChange}>
-          <input placeholder="Import from local directory..." type="text"></input>
+          <div className="ui fluid action input" onChange={this.onInputChange}>
+            <input placeholder="Import from local directory..." type="text"></input>
             <button className="ui button" onClick={this.onImportClick}>Import Files</button>
-        </div>
-        <div className="ui indicating teal  progress">
-          <div className="bar">
-            <div className="progress"></div>
           </div>
-          <div className="label">Importing Files</div>
-        </div>
+          <div className="ui indicating teal  progress">
+            <div className="bar">
+              <div className="progress"></div>
+            </div>
+            <div className="label">Importing Files</div>
+          </div>
         </div>
 
 
       </div>
-    );
+
+      );
+
   }
 }
 

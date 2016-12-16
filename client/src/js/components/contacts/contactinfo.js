@@ -8,7 +8,7 @@ import hello from 'hellojs';
 // import {} from '../../config/client_ids';
 
 
-import {itemLoad, itemUnload, itemDelete} from '../../actions/itemactions';
+import {itemLoad, itemUnload, itemUpdate, itemDelete} from '../../actions/itemactions';
 
 // var ContactInfo = React.createClass({
 class ContactInfo extends Component {
@@ -20,6 +20,7 @@ class ContactInfo extends Component {
     this.renderListViewItem = this.renderListViewItem.bind(this);
     this.renderFullView = this.renderFullView.bind(this);
     this.onClickSocial = this.onClickSocial.bind(this);
+    this.onSocialMatch = this.onSocialMatch.bind(this);
   }
 
   // getDefaultProps () {
@@ -42,6 +43,13 @@ class ContactInfo extends Component {
   //   }
   // },
 
+  onSocialMatch(network, data) {
+
+    console.log("onSocialMatch network: ", network);
+    console.log("onSocialMatch data: ", data);
+    this.props.dispatch(itemUpdate("contactinfo", "id", {[network]: contact}));
+
+  }
   _onClick() {
 
     console.log("contactInfo onClick......");
@@ -193,7 +201,7 @@ class ContactInfo extends Component {
           </div>
           <div className="ui horizontal segments">
             <div className="ui segment">
-              <img src="http://192.168.1.132:3000/d73a7b694dccfc2db24181063ccca0a5" className="ui aligned small circular image"></img>
+              <img src="http://192.168.1.147:3000/d73a7b694dccfc2db24181063ccca0a5" className="ui aligned small circular image"></img>
               <h2>
                 {contact.firstname}  {contact.middlename} {contact.lastname}
               </h2>
@@ -227,7 +235,7 @@ class ContactInfo extends Component {
     hello.init({
       google: "971270578758-mfmfamsug6d1iea5vad34ci767gprpgi.apps.googleusercontent.com"
     },{
-      redirect_uri: 'http://localhost:3010/',
+      redirect_uri: 'http://192.168.1.147:3010/',
       scope: [
         'https://www.googleapis.com/auth/plus.me',
         'https://www.googleapis.com/auth/contacts.readonly'
@@ -239,8 +247,17 @@ class ContactInfo extends Component {
 
       //Now that the sign-in is through query Google contacts for matching contact
       // hello('google').api('me/contacts').then(function(json) {
-      hello('google').api('me/contacts', 'get', {}).then(function(json) {
-        console.log('Your name is ' + json.name);
+      hello('google').api('me/contacts', 'get', {email: "jinsun76@gmail.com"}).then(function(json) {
+
+        let contact = json.data.find((field) => {
+          return field.email === "jinsun76@gmail.com";
+
+        });
+        console.log("Contact matched!!! : ", contact);
+        console.log("Contact matched!!! props: ", this);
+        this.onSocialMatch("google", data);
+        console.log("Contact matched!!! ");
+
       }, function(e) {
         console.log('Whoops! ' + e.error.message);
         console.log('Whoops! ' + JSON.stringify(e));

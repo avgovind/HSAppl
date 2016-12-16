@@ -1,10 +1,11 @@
 /**
- * Created by govind on 7/22/16.
+ * Created by govind on 11/25/16.
  */
+
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 var Modal = require('react-modal');
-import BookInfo from './bookinfo';
+import BookInfo from './messageitem';
 
 // import List from 'grommet/components/List';
 // import ListItem from 'grommet/components/ListItem';
@@ -12,7 +13,7 @@ import BookInfo from './bookinfo';
 import {indexLoad, indexUnLoad, indexNextMore, showModal, indexAdd, indexNav} from '../../actions/indexactions';
 
 
-class DigitalLibrary extends Component{
+class Messages extends Component{
 
   constructor(props) {
     super(props);
@@ -54,7 +55,7 @@ class DigitalLibrary extends Component{
       //if pageY == 0 the page is scrolled down to the END.
       // If next items should be queried to server then this is that place
       console.log("handleScroll DOWN so get more ahead index: ", this.props.index);
-      this.props.dispatch(indexNextMore("digitallibrary", this.props.index, {query: this.state.query}));
+      this.props.dispatch(indexNextMore("messages", this.props.index, {query: this.state.query}));
     }
 
   }
@@ -76,13 +77,13 @@ class DigitalLibrary extends Component{
    * */
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
-    this.props.dispatch(indexLoad("digitallibrary", {}));
+    this.props.dispatch(indexLoad("messages", {}));
   }
 
   componentWillUnmount() {
-    console.log("digitallibrary componentWillUnmount");
+    console.log("messages componentWillUnmount");
     window.removeEventListener('scroll', this.handleScroll);
-    this.props.dispatch(indexUnLoad("digitallibrary", this.props.index));
+    this.props.dispatch(indexUnLoad("messages", this.props.index));
 
   }
 
@@ -95,7 +96,7 @@ class DigitalLibrary extends Component{
   }
 
   onSelect(e) {
-    console.log("digitallibrary onSelect: ", e);
+    console.log("messages onSelect: ", e);
     this.props.dispatch(indexNav("/bookinfo", "bookinfo", e));
   }
 
@@ -134,7 +135,7 @@ class DigitalLibrary extends Component{
   }
 
   onSubmit1 () {
-    this.props.dispatch(indexAdd("digitallibrary", this.state));
+    this.props.dispatch(indexAdd("messages", this.state));
   }
 
   onChangeFirstName (e) {
@@ -157,23 +158,23 @@ class DigitalLibrary extends Component{
 
   openModal () {
 
-    this.props.dispatch(showModal("digitallibrary", {showModal: true}));
+    this.props.dispatch(showModal("messages", {showModal: true}));
   }
 
   closeModal () {
-    this.props.dispatch(showModal("digitallibrary", {showModal: false}));
+    this.props.dispatch(showModal("messages", {showModal: false}));
   }
   ////////////end - MODAL DIALOG FUNCTIONS/////////////
 
   render () {
     const { store } = this.context;
-    console.log("digitallibrary this.props: ", this.props);
+    console.log("messages this.props: ", this.props);
 
     var items = this.props.index.get('result').get('items');
 
     let elements = items.map((item, index) => {
-      console.log("digitallibrary render item: ", item);
-      console.log("digitallibrary render index: ", index);
+      console.log("messages render item: ", item);
+      console.log("messages render index: ", index);
 
       // return (
 
@@ -182,10 +183,11 @@ class DigitalLibrary extends Component{
       //   </ListItem>
       // );
       return (
+
         <div className="ui divided items">
           <BookInfo id={item.id} data={item} view='listview' onSelect={this.onSelect}/>
         </div>
-        );
+      );
     });
 
     console.log("elements: ", elements);
@@ -201,12 +203,6 @@ class DigitalLibrary extends Component{
 
     return (
       <div className="ui grid container">
-        <p>
-          <button className="ui basic button" onClick={this._onAddFriend}>
-            <i className="icon user"></i>
-            Add Books
-          </button>
-        </p>
         <div className="ui label">
           Total
           <div className="detail">{this.props.index.get('result').get('total')}</div>
@@ -219,11 +215,11 @@ class DigitalLibrary extends Component{
   }
 }
 
-DigitalLibrary.contextTypes = {
+Messages.contextTypes = {
   store: PropTypes.object
 };
 
-DigitalLibrary.propTypes = {
+Messages.propTypes = {
   type: PropTypes.string.isRequired,
   hosturl: PropTypes.string.isRequired,
 
@@ -250,8 +246,8 @@ DigitalLibrary.propTypes = {
 
 // for react-redux
 const mapStateToProps = (state) => {
-  const category = 'digitallibrary';
-  console.log("digitallibrary mapStateToProps: state: ", state);
+  const category = 'messages';
+  console.log("messages mapStateToProps: state: ", state);
 
   return {
     category: category,
@@ -260,4 +256,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(DigitalLibrary);
+export default connect(mapStateToProps)(Messages);

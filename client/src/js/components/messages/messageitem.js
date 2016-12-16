@@ -1,23 +1,15 @@
 /**
- * Created by govind on 7/23/16.
+ * Created by govind on 11/25/16.
  */
 
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 
-// import Box from 'grommet/components/Box';
-// import Anchor from 'grommet/components/Anchor';
-// import NextIcon from 'grommet/components/icons/base/Next';
-// import PrevIcon from 'grommet/components/icons/base/Previous';
-// import Label from 'grommet/components/Label';
-// import NumberInput from 'grommet/components/NumberInput';
-// import Image from 'grommet/components/Image';
-// import Card from 'grommet/components/Card';
 import {itemLoad, itemUnload} from '../../actions/itemactions';
 
 var PDF = require('react-pdf');
 
-class BookInfo extends Component {
+class MessageItem extends Component {
 
   constructor() {
     super();
@@ -28,38 +20,16 @@ class BookInfo extends Component {
     this._onPageCompleted = this._onPageCompleted.bind(this);
     this.prevPage = this.prevPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
-    this.onBookViewMode = this.onBookViewMode.bind(this);
 
     this.state = {
       currentPage: 1,
       pages: 0,
-      bookViewMode: "Lite Mode",
     };
   }
 
-  // getDefaultProps () {
-  //
-  //   return {
-  //     id: "000",
-  //     src: "jkjkjk",
-  //     desc: 'Welcome home from props!'
-  //   }
-  // }
-
-  // getInitialState: function () {
-  //   return {
-  //     key: 0,
-  //     img_src: "",
-  //     date: "",
-  //     location: "",
-  //     tags: "",
-  //     desc: 'Welcome home from propsvvvvvvvvvvvvv!'
-  //   }
-  // },
-
   _onClick() {
-    console.log("BookInfo onClick......");
 
+    console.log("MessageItem onClick......");
     this.props.onSelect(this.props.data);
 
   }
@@ -72,42 +42,21 @@ class BookInfo extends Component {
   }
 
   _onPageCompleted(page){
-    console.log("_onPageCompleted pages: ", pages);
 
     this.setState({currentPage: page});
 
   }
 
   prevPage(ev) {
-    console.log("prev: ");
-
     ev.preventDefault();
     this.setState({
       currentPage: this.state.currentPage > 1 ? this.state.currentPage - 1 : 1
     });
-    console.log("prev: ", this.state);
   }
 
   nextPage(ev) {
-    console.log("next: ");
-
     ev.preventDefault();
-    this.setState({
-      currentPage: this.state.currentPage < this.state.pages ? this.state.currentPage + 1 : this.state.pages
-    });
-
-    console.log("next: ", this.state);
-
-  }
-
-  onBookViewMode(ev) {
-
-    if(this.state.bookViewMode === "Lite Mode") {
-      this.setState({bookViewMode: "Full Mode"});
-    } else {
-      this.setState({bookViewMode: "Lite Mode"});
-    }
-
+    this.setState({ currentPage: this.state.currentPage < this.state.pages ? this.state.currentPage + 1 : this.state.pages });
   }
 
   /*
@@ -124,8 +73,9 @@ class BookInfo extends Component {
    * content first and this function can asyncronously trigger render() when there is data
    * */
   componentDidMount () {
-    this.props.dispatch(itemLoad("bookinfo", {}));
+    this.props.dispatch(itemLoad("MessageItem", {}));
   }
+
 
   componentWillUnmount () {
 
@@ -168,28 +118,43 @@ class BookInfo extends Component {
     console.log("item listview props: ", this.props.data.meta);
     var thubmailUrl = 'http://192.168.1.147:3000/' + this.props.data.meta.thumbnail;
 
-   return (
+    // return (
+    //
+    //     <Card direction="row" thumbnail={<Image src={thubmailUrl} size="small"></Image>} heading={this.props.data.originalname}  onClick={this._onClick}>
+    //           <div className="meta">
+    //             <p>Author: {this.props.data.meta.Author}</p>
+    //             <p>Created By: {this.props.data.meta.Creator}</p>
+    //             <p>Produced By: {this.props.data.meta.Producer}</p>
+    //           </div>
+    //           <div className="description">
+    //             <p>{JSON.stringify(this.props.data.meta)}</p>
+    //           </div>
+    //           <div className="extra">
+    //           </div>
+    //     </Card>
+    // );
+    return (
 
-        <div className="ui divided items" onClick={this._onClick}>
-          <div className="item">
-            <div className="ui tiny image">
-              <img src={'http://192.168.1.147:3000/' + this.props.data.meta.thumbnail}></img>
+      <div className="ui divided items" onClick={this._onClick}>
+        <div className="item">
+          <div className="ui tiny image">
+            <img src={'http://192.168.1.147:3000/' + this.props.data.meta.thumbnail}></img>
+          </div>
+          <div className="content">
+            <a className="header">{this.props.data.originalname}</a>
+            <div className="meta">
+              <p>Author: {this.props.data.meta.Author}</p>
+              <p>Created By: {this.props.data.meta.Creator}</p>
+              <p>Produced By: {this.props.data.meta.Producer}</p>
             </div>
-            <div className="content">
-              <a className="header">{this.props.data.originalname}</a>
-              <div className="meta">
-                <p>Author: {this.props.data.meta.Author}</p>
-                <p>Created By: {this.props.data.meta.Creator}</p>
-                <p>Produced By: {this.props.data.meta.Producer}</p>
-              </div>
-              <div className="description">
-                <p>{JSON.stringify(this.props.data.meta)}</p>
-              </div>
-              <div className="extra">
-              </div>
+            <div className="description">
+              <p>{JSON.stringify(this.props.data.meta)}</p>
+            </div>
+            <div className="extra">
             </div>
           </div>
         </div>
+      </div>
     );
   }
 
@@ -200,22 +165,28 @@ class BookInfo extends Component {
 
   renderFullView () {
     // console.log("photoframe renderFullView props: ", this.props);
-    var book = this.props.bookinfo1.get('result').get('item');
-    console.log("bookinfo renderFullView bookinfo: ", book);
-    console.log("bookinfo renderFullView state: ", this.state);
+    var book = this.props.messageItem1.get('result').get('item');
+    console.log("messageItem renderFullView messageItem: ", book);
+    console.log("messageItem renderFullView state: ", this.state);
 
-    let pdf = <div className="ui container"><h3>Full mode not supported...</h3></div>;
-
-    if (this.state.bookViewMode == "Lite Mode"){
-      pdf = (
-        <PDF file={'http://192.168.1.147:3000/' + book.filename}
-            page={this.state.currentPage}
-            scale={2}
-            onDocumentComplete={this._onDocumentCompleted}
-            onPageComplete={this._onPageComplete}>
-        </PDF>
-      );
-    }
+    // return (
+    //   <Box>
+    //     <Anchor href="" icon={<PrevIcon />} label="Prev" reverse={true}  onClick={this.prevPage} />
+    //     <Anchor href="" icon={<NextIcon />} label="Next" reverse={true}  onClick={this.prevPage} />
+    //     <div direction="row">
+    //       <Label>Page: </Label>
+    //       <NumberInput value={this.state.currentPage}  />
+    //       <Label>of {this.state.pages} pages </Label>
+    //     </div>
+    //     <PDF file={'http://192.168.1.132:3000/' + book.filename}
+    //          page={this.state.currentPage}
+    //          scale={2}
+    //          onDocumentComplete={this._onDocumentCompleted}
+    //          onPageComplete={this._onPageComplete}>
+    //     </PDF>
+    //   </Box>
+    //
+    // );
 
     return(
       <div className="ui grid container">
@@ -224,7 +195,7 @@ class BookInfo extends Component {
             <i className="left arrow icon"></i>
             Prev
           </button>
-          <button className="ui right labeled icon button"  onClick={this.nextPage}>
+          <button className="ui right labeled icon button"  onClick={this.prevPage}>
             <i className="right arrow icon"></i>
             Next
           </button>
@@ -238,21 +209,27 @@ class BookInfo extends Component {
             of {this.state.pages} pages
           </div>
         </div>
-        <button className="ui toggle button" onClick={this.onBookViewMode}>{this.state.bookViewMode}</button>
-        {pdf}
+        <PDF file={'http://192.168.1.147:3000/' + book.filename}
+             page={this.state.currentPage}
+             scale={2}
+             onDocumentComplete={this._onDocumentCompleted}
+             onPageComplete={this._onPageComplete}>
+        </PDF>
       </div>
 
     );
   }
 
+
+
 };
 
-BookInfo.contextTypes = {
+MessageItem.contextTypes = {
   store: PropTypes.object
 };
 
-BookInfo.propTypes = {
-  bookinfo1: PropTypes.shape({
+MessageItem.propTypes = {
+  messageItem1: PropTypes.shape({
     category: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.arrayOf(PropTypes.string)
@@ -264,22 +241,22 @@ BookInfo.propTypes = {
     },
     addRoute: PropTypes.string
   }).isRequired,
-  bookinfo: PropTypes.object,
+  messageItem: PropTypes.object,
   dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, props) => {
-  console.log("bookinfo mapStateToProps state: ", state);
-  
-  const category = 'bookinfo';
+  console.log("messageItem mapStateToProps state: ", state);
+
+  const category = 'messageItem';
 
   return {
     category: category,
-    bookinfo1: state.index.getIn(['categories', category])
+    messageItem1: state.index.getIn(['categories', category])
 
   };
 };
 
 
-export default connect(mapStateToProps)(BookInfo);
+export default connect(mapStateToProps)(MessageItem);
 

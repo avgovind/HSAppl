@@ -88,13 +88,52 @@ export function itemUnLoad(category, selection) {
   };
 }
 
+export function itemUpdate(category, id, data) {
+
+  console.log("itemUpdate action selection: ", id);
+
+  return dispatch => {
+
+    let uri = 'http://192.168.1.147:3000/rest/updateitem';
+    // let uri = 'http://localhost:3000/rest/updateitem';
+
+    let reqBody = {
+      category: category,
+      id: id,
+      update: data
+    };
+
+    let restRequest = {
+      method: "POST",
+      body: JSON.stringify(reqBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    fetch(uri, restRequest)
+      .then(function(response) {
+        console.log('parsed response', response);
+        return response.json()
+      }).then(function(json) {
+      console.log('parsed json', json);
+      // dispatch(indexNav("/contacts", "contacts"));
+    }).catch(function(ex) {
+      console.log('parsing failed', ex);
+    });
+
+  };
+
+}
+
 export function itemDelete(category, selection) {
 
   console.log("itemDelete action selection: ", selection);
 
   return dispatch => {
 
-    let uri = 'http://localhost:3000/rest/deleteitem';
+    let uri = 'http://192.168.1.147:3000/rest/deleteitem';
+    // let uri = 'http://localhost:3000/rest/deleteitem';
 
     let reqBody = {
       category: category,

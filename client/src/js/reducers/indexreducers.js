@@ -103,6 +103,28 @@ const initialState = Immutable.fromJS({
         item: {}
       },
     },
+    messages: {
+      label: "Incoming Messages",
+      view: 'tiles',
+      sort: 'date:dsc',
+      showModal: false,
+      result: {
+        begin: 0,
+        currentBegin: 0,
+        currentEnd: 0,
+        total: 0,
+        items: [],
+        filters: {}
+      },
+    },
+    messageitem: {
+      label: "Message information",
+      view: 'fullview',
+      showModal: false,
+      result: {
+        item: {}
+      },
+    },
     financials: {
       label: "Financials",
       view: 'tiles',
